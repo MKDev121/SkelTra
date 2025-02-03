@@ -10,7 +10,7 @@ running = True
 pg.display.set_caption("SkelTra")
 char=character.Character()
 while running:
-    mouse_pos=pg.mouse.get_pos()
+    shared.mouse_pos=mouse_pos=pg.mouse.get_pos()
     # poll for events
     # pg.QUIT event means the user clicked X to close your window
     for event in pg.event.get():

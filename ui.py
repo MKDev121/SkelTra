@@ -20,6 +20,7 @@ pygame.display.set_caption("Sidebar with Buttons, Labels, and Headings")
 
 # Fonts
 font_heading = pygame.font.Font(None, 48)  # Larger font for headings
+font_sub=pygame.font.Font(None,36)
 font_button = pygame.font.Font(None, 36)  # Font for buttons
 
 # Text Class
@@ -123,8 +124,8 @@ sidebar.add_button(icon_button1)
 
 heading_text = Text("Character", font_heading, BLACK)
 heading_text1 = Text("Holder", font_heading, BLACK)
-heading_text2 = Text("Head", font_heading, BLACK)
-heading_text3 = Text("Body", font_heading, BLACK)
+heading_text2 = Text("Head", font_sub, WHITE)
+heading_text3 = Text("Body", font_sub, WHITE)
 heading_text4 = Text("Rig", font_heading, BLACK)
 heading_text5 = Text("Sprite", font_heading, BLACK)
 
