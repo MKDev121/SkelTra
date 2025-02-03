@@ -197,9 +197,11 @@ while running:
         sidebar.handle_event(event)
 
         if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
-            if icon_button.is_clicked(mouse_pos):
+            # Adjust mouse position for scroll offset
+            adjusted_mouse_pos = (mouse_pos[0], mouse_pos[1] + sidebar.content_offset)
+            if icon_button.is_clicked(adjusted_mouse_pos):
                 icon_button.handle_click()
-            if icon_button1.is_clicked(mouse_pos):
+            if icon_button1.is_clicked(adjusted_mouse_pos):
                 icon_button1.handle_click()
 
     sidebar.draw(screen)
