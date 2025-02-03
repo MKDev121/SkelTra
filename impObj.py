@@ -34,3 +34,16 @@ class frame:
     # def load_frame(self,pos,screen=pg.display.set_mode(0,0)):
     #     for part in self.parts:
     #         screen.blit(part,pos)
+
+
+class Button: #class
+    def __init__(icon,colour,cuisine_type): #method
+        self.restaurant_name = restaurant_name
+        self.cuisine_type = cuisine_type
+    
+    def describe_restaurant(self): #method
+        print(f"the name of the restaurant is {self.restaurant_name}")
+        print(f"cuisine type : {self.cuisine_type}")
+
+    def open_restaurant(self): #method
+        print("OPEN")
