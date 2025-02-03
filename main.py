@@ -29,6 +29,17 @@ while running:
     
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("grey")
+    i = 1
+    while i < screen.get_width():
+        pg.draw.rect(screen,(0,0,0),(i,0,1,screen.get_height()),5,1)
+        i += (screen.get_width())/15
+    j = 1
+    while j < screen.get_height():
+        pg.draw.rect(screen,(0,0,0),(0,j,screen.get_width(),1),5,1)
+        j += (screen.get_height())/10
+    # draw a rectangle
+    # pg.draw.rect(screen, (0,0,0), (1,screen.get_height(),100,150)) #-> Rect
+    # pg.draw.rect(screen, (0,0,0), (10,10,100,150), width=0, border_radius=0, border_top_left_radius=-1, border_top_right_radius=-1, border_bottom_left_radius=-1, border_bottom_right_radius=-1) #-> Rect
 
     # IO
     if(shared.current_holder_state==shared.holder_states[0]):
