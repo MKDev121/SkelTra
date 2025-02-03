@@ -25,9 +25,9 @@ class holder:
   
 class frame:
     def __init__(self):
-        self.parts=[]
-    def add_parts(self,location):
-        self.parts.append(pg.image.load(location))
+        self.parts={}
+    def add_parts(self,holder,location):
+        self.parts[holder]=pg.transform.smoothscale(pg.image.load(location),holder.scale)
     # def load_frame(self,pos,screen=pg.display.set_mode(0,0)):
     #     for part in self.parts:
     #         screen.blit(part,pos)

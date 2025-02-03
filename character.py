@@ -42,12 +42,12 @@ class Body:
                 shared.mouse_state="buffer"
 
             if(shared.current_holder_state==shared.holder_states[2]):
-                location=r"test\1_ORK_"+input("Enter name: ")
-                self.sprite.selected_frame.add_parts(location)
+                location=r"test\1_ORK_"+input("Enter name: ")+".png"
+                self.sprite.selected_frame.add_parts(holder,location)
                 shared.current_holder_state=shared.holder_states[1]
-    # def load_frame(self,screen):
-    #     for part in self.selected_frame.parts:
-    #         pass
+    def load_frame(self,screen):
+        for holder,part in self.sprite.selected_frame.parts.items():
+            screen.blit(part,holder.position)
 
         
         

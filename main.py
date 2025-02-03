@@ -45,6 +45,8 @@ while running:
        shared.mouse_state=""
     # RENDER YOUR GAME HERE
     char.load(screen)
+    char.Body.load_frame(screen)
+    char.Body.add_frame_part()
     # flip() the display to put your work on screen
     pg.display.flip()
  
