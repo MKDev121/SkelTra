@@ -129,7 +129,7 @@ dynamic_texts_pair2 = []
 
 # Function to handle "New Holder" addition
 def add_new_text_pair1():
-    global dynamic_texts_pair1,button1,icon_button
+    global dynamic_texts_pair1, button1, icon_button
     if dynamic_texts_pair1:
         last_element = dynamic_texts_pair1[-1]
         y_offset = last_element.rect.y + 60  # Place new element 60 pixels below the last one
@@ -146,17 +146,17 @@ def add_new_text_pair1():
     sidebar.add_element(new_text)
     dynamic_texts_pair1.append(new_text)
 
-    button1.rect.y +=60
-    icon_button.rect.y +=60
+    # Move the "New Holder" button and icon button down by 60 pixels
+    button1.rect.y += 60
+    icon_button.rect.y += 60
 
 # Function to handle "New Bone" addition
 def add_new_text_pair2():
-    global dynamic_texts_pair2
+    global dynamic_texts_pair2, button2, icon_button1
     if dynamic_texts_pair2:
         last_element = dynamic_texts_pair2[-1]
         y_offset = last_element.rect.y + 60  # Place new element 60 pixels below the last one
     else:
-        
         y_offset = 430  # Initial y-coordinate for the first element
 
     # Shift all elements below the "New Bone" section down by 60 pixels
@@ -168,6 +168,10 @@ def add_new_text_pair2():
     new_text = Text(f"New Bone Item {len(dynamic_texts_pair2) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
     sidebar.add_element(new_text)
     dynamic_texts_pair2.append(new_text)
+
+    # Move the "New Bone" button and icon button down by 60 pixels
+    button2.rect.y += 60
+    icon_button1.rect.y += 60
 
 # Create buttons and add to sidebar
 button1 = Button(SCREEN_WIDTH - 270, 270, 245, 50, DARK_GRAY, (109, 93, 110), button_text1)
