@@ -145,7 +145,8 @@ def add_new_text_pair1():
     new_text = Text(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
     sidebar.add_element(new_text)
     dynamic_texts_pair1.append(new_text)
-
+    
+    screen.blit()
     # Move the "New Holder" button and icon button down by 60 pixels
     button1.rect.y += 60
     icon_button.rect.y += 60
