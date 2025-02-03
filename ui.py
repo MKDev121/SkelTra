@@ -104,24 +104,24 @@ class Button:
             self.callback()
 
 # Create scrollable sidebar
-sidebar = ScrollablePanel(SCREEN_WIDTH - 350, 0, 350, SCREEN_HEIGHT, LIGHT_GRAY)
+sidebar = ScrollablePanel(SCREEN_WIDTH - 350, 0, 350, SCREEN_HEIGHT, (79, 69, 87))
 
 # Create initial headings
 headings = [
-    Text("Character", font_heading, BLACK, SCREEN_WIDTH - 325, 20),
-    Text("Holder", font_heading, BLACK, SCREEN_WIDTH - 325, 80),
-    Text("Head", font_heading, BLACK, SCREEN_WIDTH - 325, 150),
-    Text("Body", font_heading, BLACK, SCREEN_WIDTH - 325, 220),
-    Text("Rig", font_heading, BLACK, SCREEN_WIDTH - 325, 365),
-    Text("Sprite", font_heading, BLACK, SCREEN_WIDTH - 325, 500),
+    Text("Character", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 20),
+    Text("Holder", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 80),
+    Text("Head", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 150),
+    Text("Body", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 220),
+    Text("Rig", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 365),
+    Text("Sprite", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 500),
 ]
 
 for heading in headings:
     sidebar.add_element(heading)
 
 # Create button text objects
-button_text1 = Text("New Holder", font_button, WHITE, 0, 0)
-button_text2 = Text("New Bone", font_button, WHITE, 0, 0)
+button_text1 = Text("New Holder", font_button, (244, 238, 224), 0, 0)
+button_text2 = Text("New Bone", font_button, (244, 238, 224), 0, 0)
 
 # Store dynamically created text objects
 dynamic_texts_pair1 = []
@@ -142,7 +142,7 @@ def add_new_text_pair1():
             element.rect.y += 60
 
     # Add the new "New Holder" item
-    new_text = Text(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, BLACK, SCREEN_WIDTH - 325, y_offset)
+    new_text = Text(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
     sidebar.add_element(new_text)
     dynamic_texts_pair1.append(new_text)
 
@@ -165,15 +165,15 @@ def add_new_text_pair2():
             element.rect.y += 60
 
     # Add the new "New Bone" item
-    new_text = Text(f"New Bone Item {len(dynamic_texts_pair2) + 1}", font_button, BLACK, SCREEN_WIDTH - 325, y_offset)
+    new_text = Text(f"New Bone Item {len(dynamic_texts_pair2) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
     sidebar.add_element(new_text)
     dynamic_texts_pair2.append(new_text)
 
 # Create buttons and add to sidebar
-button1 = Button(SCREEN_WIDTH - 270, 270, 245, 50, DARK_GRAY, BLUE, button_text1)
-button2 = Button(SCREEN_WIDTH - 270, 420, 245, 50, DARK_GRAY, BLUE, button_text2)
-icon_button = Button(SCREEN_WIDTH - 325, 270, 50, 50, DARK_GRAY, BLACK, icon=icon_image, callback=add_new_text_pair1)
-icon_button1 = Button(SCREEN_WIDTH - 325, 420, 50, 50, DARK_GRAY, BLACK, icon=icon_image, callback=add_new_text_pair2)
+button1 = Button(SCREEN_WIDTH - 270, 270, 245, 50, DARK_GRAY, (109, 93, 110), button_text1)
+button2 = Button(SCREEN_WIDTH - 270, 420, 245, 50, DARK_GRAY, (109, 93, 110), button_text2)
+icon_button = Button(SCREEN_WIDTH - 325, 270, 50, 50, DARK_GRAY, (109, 93, 110), icon=icon_image, callback=add_new_text_pair1)
+icon_button1 = Button(SCREEN_WIDTH - 325, 420, 50, 50, DARK_GRAY, (109, 93, 110), icon=icon_image, callback=add_new_text_pair2)
 
 sidebar.add_element(button1)
 sidebar.add_element(button2)
@@ -183,7 +183,7 @@ sidebar.add_element(icon_button1)
 # Main loop
 running = True
 while running:
-    screen.fill(WHITE)
+    screen.fill((57, 54, 70))
 
     mouse_pos = pygame.mouse.get_pos()
 
