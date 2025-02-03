@@ -1,8 +1,8 @@
-import pygame
+import pygame as pg
 import sys
 
-# Initialize Pygame
-pygame.init()
+# Initialize pg
+pg.init()
 
 # Colors
 WHITE = (255, 255, 255)
@@ -12,26 +12,26 @@ BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 
 # Initialize screen
-screen = pygame.display.set_mode()
+screen = pg.display.set_mode()
 SCREEN_WIDTH, SCREEN_HEIGHT = screen.get_size()
-pygame.display.set_caption("Scrollable Sidebar")
+pg.display.set_caption("Scrollable Sidebar")
 
 # Fonts
-font_heading = pygame.font.Font(None, 48)
-font_button = pygame.font.Font(None, 36)
+font_heading = pg.font.Font(None, 48)
+font_button = pg.font.Font(None, 36)
 
 # Load Icon Image
 try:
-    icon_image = pygame.image.load("add-outline.png")
-    icon_image = pygame.transform.scale(icon_image, (30, 30))
-except pygame.error:
+    icon_image = pg.image.load("add-outline.png")
+    icon_image = pg.transform.scale(icon_image, (30, 30))
+except pg.error:
     print("Error: Image 'add-outline.png' not found.")
     icon_image = None
 
 # Scrollable Panel Class
 class ScrollablePanel:
     def __init__(self, x, y, width, height, color):
-        self.rect = pygame.Rect(x, y, width, height)
+        self.rect = pg.Rect(x, y, width, height)
         self.color = color
         self.content_offset = 0
         self.elements = []
@@ -46,7 +46,7 @@ class ScrollablePanel:
         self.content_offset = max(min(self.content_offset, self.max_scroll), 0)
 
     def draw(self, screen):
-        panel_surface = pygame.Surface((self.rect.width, self.rect.height))
+        panel_surface = pg.Surface((self.rect.width, self.rect.height))
         panel_surface.fill(self.color)
 
         for element in self.elements:
@@ -57,7 +57,7 @@ class ScrollablePanel:
         screen.blit(panel_surface, self.rect.topleft)
 
     def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pg.MOUSEBUTTONDOWN:
             if event.button == 4:
                 self.scroll(-30)
             elif event.button == 5:
@@ -78,7 +78,7 @@ class Text:
 # Button Class
 class Button:
     def __init__(self, x, y, width, height, color, hover_color, text_obj=None, icon=None, callback=None):
-        self.rect = pygame.Rect(x, y, width, height)
+        self.rect = pg.Rect(x, y, width, height)
         self.text_obj = text_obj
         self.color = color
         self.hover_color = hover_color
@@ -87,7 +87,7 @@ class Button:
         self.callback = callback
 
     def draw(self, screen, position):
-        pygame.draw.rect(screen, self.hover_color if self.hovered else self.color, position + self.rect.size)
+        pg.draw.rect(screen, self.hover_color if self.hovered else self.color, position + self.rect.size)
         if self.text_obj:
             self.text_obj.draw(screen, (position[0] + 10, position[1] + 10))
         if self.icon:
@@ -185,21 +185,21 @@ running = True
 while running:
     screen.fill((57, 54, 70))
 
-    mouse_pos = pygame.mouse.get_pos()
+    mouse_pos = pg.mouse.get_pos()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
             running = False
         sidebar.handle_event(event)
 
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
             if icon_button.is_clicked(mouse_pos):
                 icon_button.handle_click()
             if icon_button1.is_clicked(mouse_pos):
                 icon_button1.handle_click()
 
     sidebar.draw(screen)
-    pygame.display.flip()
+    pg.display.flip()
 
-pygame.quit()
+pg.quit()
 sys.exit()
