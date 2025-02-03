@@ -17,7 +17,7 @@ class Rig:
         self.bones={}
 
     def add_bone(self,name):
-        self.bones[name]=impObj.bone()
+        self.bones[name]=impObj.bone(0)
 
 class Sprite:
 
