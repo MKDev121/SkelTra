@@ -18,7 +18,7 @@ while running:
             running = False
         if event.type==pg.KEYDOWN:
            if event.key ==pg.K_a:
-            char.Body.intial_pos=position=pg.mouse.get_pos()
+            char.Body.intial_pos = position = pg.mouse.get_pos()
             name="holder_"+str(len(char.Body.holders))
             shared.current_holder_state=shared.holder_states[0]
             
