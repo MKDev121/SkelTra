@@ -9,8 +9,9 @@ WHITE = (255, 255, 255)
 LIGHT_GRAY = (200, 200, 200)
 DARK_GRAY = (100, 100, 100)
 BLUE = (0, 0, 255)
-GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
+
+background_color = WHITE  # Default background
 
 # Initialize screen
 screen = pygame.display.set_mode()
@@ -19,7 +20,6 @@ pygame.display.set_caption("Sidebar with Buttons, Labels, and Headings")
 
 # Fonts
 font_heading = pygame.font.Font(None, 48)  # Larger font for headings
-font_label = pygame.font.Font(None, 24)   # Smaller font for labels
 font_button = pygame.font.Font(None, 36)  # Font for buttons
 
 # Text Class
@@ -41,26 +41,28 @@ class Text:
 
 # Button Class
 class Button:
-    def __init__(self, x, y, width, height, text_obj, color, hover_color):
+    def __init__(self, x, y, width, height, color, hover_color, text_obj=None, icon=None):
         self.rect = pygame.Rect(x, y, width, height)
         self.text_obj = text_obj
         self.color = color
         self.hover_color = hover_color
         self.hovered = False
+        self.icon = icon
 
     def draw(self, screen):
-        # Change color if hovered
-        if self.hovered:
-            pygame.draw.rect(screen, self.hover_color, self.rect)
-        else:
-            pygame.draw.rect(screen, self.color, self.rect)
-        
-        # Draw the text centered on the button
-        text_position = (
-            self.rect.centerx - self.text_obj.rect.width // 2,
-            self.rect.centery - self.text_obj.rect.height // 2
-        )
-        self.text_obj.draw(screen, text_position)
+        pygame.draw.rect(screen, self.hover_color if self.hovered else self.color, self.rect)
+
+        if self.text_obj:
+            text_position = (
+                self.rect.centerx - self.text_obj.rect.width // 2,
+                self.rect.centery - self.text_obj.rect.height // 2
+            )
+            self.text_obj.draw(screen, text_position)
+
+        if self.icon:
+            icon_x = self.rect.x + 10
+            icon_y = self.rect.centery - self.icon.get_height() // 2
+            screen.blit(self.icon, (icon_x, icon_y))
 
     def check_hover(self, mouse_pos):
         self.hovered = self.rect.collidepoint(mouse_pos)
@@ -87,32 +89,42 @@ class Panel:
         for button in self.buttons:
             button.check_hover(mouse_pos)
             if button.is_clicked(mouse_pos):
-                print(f"Button '{button.text_obj.text}' clicked!")
-                # You can add specific functionality for each button here
+                if button.text_obj:
+                    print(f"Button '{button.text_obj.text}' clicked!")
+                else:
+                    print("Icon button clicked!")  # Prevent quitting when clicking icon
+                    return  # Prevent it from acting like a normal button
+
+# Load Icon Image
+try:
+    icon_image = pygame.image.load("add-outline.png")
+    icon_image = pygame.transform.scale(icon_image, (30, 30))
+except pygame.error:
+    print("Error: Image 'add-outline.png' not found. Make sure it's in the correct directory.")
+    icon_image = None
 
 # Create a panel
 sidebar = Panel(SCREEN_WIDTH - 350, 0, 350, SCREEN_HEIGHT, LIGHT_GRAY)
 
 # Create text objects for buttons
-button_text1 = Text("Head", font_button, WHITE)
-button_text2 = Text("Body", font_button, WHITE)
-button_text3 = Text("New Holder", font_button, WHITE)
-button_text4 = Text("Bone-1", font_button, WHITE)
+button_text1 = Text("New Holder", font_button, WHITE)
+button_text2 = Text("New Bone", font_button, WHITE)
 
 # Add buttons to the panel
-button1 = Button(SCREEN_WIDTH - 325, 150, 300, 50, button_text1, DARK_GRAY, BLUE)
-button2 = Button(SCREEN_WIDTH - 325, 220, 300, 50, button_text2, DARK_GRAY, BLUE)
-button3 = Button(SCREEN_WIDTH - 290, 290, 260, 50, button_text3, DARK_GRAY, BLUE)
-button4 = Button(SCREEN_WIDTH - 325, 425, 300, 50, button_text4, DARK_GRAY, BLUE)
+button1 = Button(SCREEN_WIDTH - 270, 270, 225, 50, DARK_GRAY, BLUE, button_text1)
+button2 = Button(SCREEN_WIDTH - 325, 420, 300, 50, DARK_GRAY, BLUE, button_text2)
+icon_button = Button(SCREEN_WIDTH - 325, 270, 50, 50, DARK_GRAY, BLACK, icon=icon_image)  # ✅ Assign the icon
 
 sidebar.add_button(button1)
 sidebar.add_button(button2)
-sidebar.add_button(button3)
-sidebar.add_button(button4)
+sidebar.add_button(icon_button)
 
 heading_text = Text("Character", font_heading, BLACK)
-heading_text1 = Text("Holder",font_heading,BLACK)
-heading_text2 = Text("Rig",font_heading,BLACK)
+heading_text1 = Text("Holder", font_heading, BLACK)
+heading_text2 = Text("Head", font_heading, BLACK)
+heading_text3 = Text("Body", font_heading, BLACK)
+heading_text4 = Text("Rig", font_heading, BLACK)
+heading_text5 = Text("Sprite", font_heading, BLACK)
 
 running = True
 while running:
@@ -121,19 +133,19 @@ while running:
             running = False
 
     mouse_pos = pygame.mouse.get_pos()
-
     sidebar.handle_event(mouse_pos)
 
     screen.fill(WHITE)
-
     sidebar.draw(screen)
+
     heading_text.draw(screen, (SCREEN_WIDTH - 260, 20))
     heading_text1.draw(screen, (SCREEN_WIDTH - 325, 80))
-    heading_text2.draw(screen, (SCREEN_WIDTH - 325, 365))
+    heading_text2.draw(screen, (SCREEN_WIDTH - 325, 150))
+    heading_text3.draw(screen, (SCREEN_WIDTH - 325, 220))
+    heading_text4.draw(screen, (SCREEN_WIDTH - 325, 365))
+    heading_text5.draw(screen, (SCREEN_WIDTH - 325, 500))
 
-    # Update the display
     pygame.display.flip()
 
-# Quit Pygame
 pygame.quit()
 sys.exit()
