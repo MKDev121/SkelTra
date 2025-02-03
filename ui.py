@@ -97,17 +97,22 @@ sidebar = Panel(SCREEN_WIDTH - 350, 0, 350, SCREEN_HEIGHT, LIGHT_GRAY)
 button_text1 = Text("Head", font_button, WHITE)
 button_text2 = Text("Body", font_button, WHITE)
 button_text3 = Text("New Holder", font_button, WHITE)
+button_text4 = Text("Bone-1", font_button, WHITE)
 
 # Add buttons to the panel
-button1 = Button(SCREEN_WIDTH - 325, 100, 300, 50, button_text1, DARK_GRAY, BLUE)
-button2 = Button(SCREEN_WIDTH - 325, 170, 300, 50, button_text2, DARK_GRAY, BLUE)
-button3 = Button(SCREEN_WIDTH - 285, 240, 260, 50, button_text3, DARK_GRAY, BLUE)
+button1 = Button(SCREEN_WIDTH - 325, 150, 300, 50, button_text1, DARK_GRAY, BLUE)
+button2 = Button(SCREEN_WIDTH - 325, 220, 300, 50, button_text2, DARK_GRAY, BLUE)
+button3 = Button(SCREEN_WIDTH - 290, 290, 260, 50, button_text3, DARK_GRAY, BLUE)
+button4 = Button(SCREEN_WIDTH - 325, 425, 300, 50, button_text4, DARK_GRAY, BLUE)
 
 sidebar.add_button(button1)
 sidebar.add_button(button2)
 sidebar.add_button(button3)
+sidebar.add_button(button4)
 
 heading_text = Text("Character", font_heading, BLACK)
+heading_text1 = Text("Holder",font_heading,BLACK)
+heading_text2 = Text("Rig",font_heading,BLACK)
 
 running = True
 while running:
@@ -123,6 +128,8 @@ while running:
 
     sidebar.draw(screen)
     heading_text.draw(screen, (SCREEN_WIDTH - 260, 20))
+    heading_text1.draw(screen, (SCREEN_WIDTH - 325, 80))
+    heading_text2.draw(screen, (SCREEN_WIDTH - 325, 365))
 
     # Update the display
     pygame.display.flip()
