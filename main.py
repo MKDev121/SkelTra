@@ -130,7 +130,7 @@ dynamic_texts_pair1 = []
 dynamic_texts_pair2 = []
 
 # Create buttons and add to sidebar
-button1 = Button(SCREEN_WIDTH - 270, 120, 245, 50, DARK_GRAY, (109, 93, 110), button_text1)
+button1 = Button(SCREEN_WIDTH - 270, 130, 245, 50, DARK_GRAY, (109, 93, 110), button_text1)
 button2 = Button(SCREEN_WIDTH - 270, 420, 245, 50, DARK_GRAY, (109, 93, 110), button_text2)
 
 # Function to handle "New Holder" addition
@@ -171,7 +171,7 @@ def add_new_text_pair2():
     sidebar.add_element(new_text)
     dynamic_texts_pair2.append(new_text)
 
-icon_button = Button(SCREEN_WIDTH - 325, 120, 50, 50, DARK_GRAY, (109, 93, 110), icon=icon_image, callback=add_new_text_pair1)
+icon_button = Button(SCREEN_WIDTH - 325, 130, 50, 50, DARK_GRAY, (109, 93, 110), icon=icon_image, callback=add_new_text_pair1)
 icon_button1 = Button(SCREEN_WIDTH - 325, 420, 50, 50, DARK_GRAY, (109, 93, 110), icon=icon_image, callback=add_new_text_pair2)
 
 sidebar.add_element(button1)
