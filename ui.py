@@ -101,7 +101,7 @@ button_text3 = Text("New Holder", font_button, WHITE)
 # Add buttons to the panel
 button1 = Button(SCREEN_WIDTH - 325, 100, 300, 50, button_text1, DARK_GRAY, BLUE)
 button2 = Button(SCREEN_WIDTH - 325, 170, 300, 50, button_text2, DARK_GRAY, BLUE)
-button3 = Button(SCREEN_WIDTH - 290, 240, 260, 50, button_text3, DARK_GRAY, BLUE)
+button3 = Button(SCREEN_WIDTH - 285, 240, 260, 50, button_text3, DARK_GRAY, BLUE)
 
 sidebar.add_button(button1)
 sidebar.add_button(button2)
