@@ -1,0 +1,29 @@
+Our software is to make a animation software which combines skeletal and traditional animation
+
+Working
+
+There will be main class Character which has sub-objects- sprite , rig, Body 
+
+SPRITE
+It contains all the visual stuff of the character, it has a dictionary called "frames"
+where each frame is a image object.
+
+There will be a method to add frames that is user will click on a button to add frames.
+
+The image object will contain the path of image and a pygame image object
+
+Body
+It is a bridge which connects bones with the part of the image.
+It will contain a dictionary called "Holders".
+Holders will have holder_name as key and holder_object as item.
+
+The holder object will have attributes like position ,rotation and scale.
+
+Rig
+It will control the movement the body parts of the object, it will move the holder and with the holder the image part will
+also move.
+It has a list called bones which contains bone objects.
+The holder will follow the position of the bone object.
+The user will interact with bone object by rotating and position when it is selected.
+There will be bone button which will create bones, to create bone user will select the holder on which the bone is to be
+created.
