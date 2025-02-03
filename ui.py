@@ -111,13 +111,15 @@ button_text1 = Text("New Holder", font_button, WHITE)
 button_text2 = Text("New Bone", font_button, WHITE)
 
 # Add buttons to the panel
-button1 = Button(SCREEN_WIDTH - 270, 270, 225, 50, DARK_GRAY, BLUE, button_text1)
-button2 = Button(SCREEN_WIDTH - 325, 420, 300, 50, DARK_GRAY, BLUE, button_text2)
+button1 = Button(SCREEN_WIDTH - 270, 270, 245, 50, DARK_GRAY, BLUE, button_text1)
+button2 = Button(SCREEN_WIDTH - 270, 420, 245, 50, DARK_GRAY, BLUE, button_text2)
 icon_button = Button(SCREEN_WIDTH - 325, 270, 50, 50, DARK_GRAY, BLACK, icon=icon_image)  # ✅ Assign the icon
+icon_button1 = Button(SCREEN_WIDTH - 325, 420, 50, 50, DARK_GRAY, BLACK, icon=icon_image)  
 
 sidebar.add_button(button1)
 sidebar.add_button(button2)
 sidebar.add_button(icon_button)
+sidebar.add_button(icon_button1)
 
 heading_text = Text("Character", font_heading, BLACK)
 heading_text1 = Text("Holder", font_heading, BLACK)
