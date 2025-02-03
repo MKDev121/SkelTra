@@ -10,7 +10,7 @@ where each frame is a image object.
 
 There will be a method to add frames that is user will click on a button to add frames.
 
-The image object will contain the path of image and a pygame image object
+The image object will contain the path of image and a pg image object
 
 Body
 It is a bridge which connects bones with the part of the image.
