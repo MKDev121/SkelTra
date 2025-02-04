@@ -188,12 +188,37 @@ sidebar.add_element(icon_button1)
 pause_button = pg.transform.smoothscale(pg.image.load('UI_Pics/pause.png'),(64,64))
 play_button = pg.transform.smoothscale(pg.image.load('UI_Pics/play.png'),(64,64))
 record_button = pg.transform.smoothscale(pg.image.load('UI_Pics/BtnR.png'),(64,64))
+
 # Main loop
+
+class Panel:
+    def __init__(self,x,y,height,width1,width2,color1,color2):
+        self.height = height
+        self.width1 = width1
+        self.width2 = width2
+        self.color1 = color1
+        self.color2 = color2
+        self.x = x
+        self.y = y
+
+    def draw_rectangle(self,screen):
+        pg.draw.rect(screen, self.color1, (self.x , self.y,self.width1 , self.height))
+        pg.draw.rect(screen, self.color2,(self.x , self.y, self.width2, self.height))
+
+    def draw_lines(self,screen,width_spacing,margin,color):
+        i = 0
+        while i < screen.get_width() - margin : 
+            pg.draw.rect(screen, color,(i + screen.get_width()/4, self.y,1 , self.height))
+            i += (screen.get_width()) / width_spacing
+
 running = True
 while running:
     screen.fill((57, 54, 70))
-    pg.draw.rect(screen, (79,69,87), (0,screen.get_height()-200,screen.get_width(),200))
-    pg.draw.rect(screen, (109,93,110), (0,screen.get_height()-200,screen.get_width()/5,200))  
+    panel = Panel(0,screen.get_height()-200,200,screen.get_width(),screen.get_width()/4,(79,69,87),(109,93,110))
+    panel.draw_rectangle(screen)
+    panel.draw_lines(screen,15,30,(255,255,255))
+    
+
     mouse_pos = pg.mouse.get_pos()
 
     for event in pg.event.get():
@@ -219,7 +244,6 @@ while running:
     screen.blit(pause_button,pause)
     screen.blit(play_button,play)
     screen.blit(record_button,record)
-
 
     pg.display.flip()
 
