@@ -31,7 +31,7 @@ class holder:
         self.holder_buttons=[HolderButton(self.position+pg.Vector2(0,-20),(16,16),(0,0,255))]
 
     def load(self,screen):
-        pg.draw.rect(screen,'black',(self.position,self.scale),5)
+        pg.draw.rect(screen,'black',(self.position,self.scale),3)
         #pg.draw.rect(screen,'grey',(self.position+pg.Vector2(4,4),self.scale-pg.Vector2(8,8)))
     def display_holder_buttons(self,screen):
         count=0
@@ -44,6 +44,11 @@ class holder:
                 shared.mouse_down=False
                 print("Selected")
             count+=1
+            image_box = pg.transform.smoothscale(pg.image.load('UI_Pics/image.jpg'),(20,20))
+            img = image_box.get_rect(center = (pos[0]+10,pos[1]+6))
+            screen.blit(image_box, img)
+
+
 
 
 
