@@ -219,6 +219,7 @@ while running:
     while i < screen.get_width():
         pg.draw.rect(screen,(0,0,0),(i,0,1,screen.get_height()),5,1)
         i += (screen.get_width())/20
+        
 
     j = 1
     while j < screen.get_height():

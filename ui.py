@@ -185,11 +185,14 @@ sidebar.add_element(button2)
 sidebar.add_element(icon_button)
 sidebar.add_element(icon_button1)
 
+pause_button = pg.transform.smoothscale(pg.image.load('UI_Pics/pause.png'),(64,64))
+play_button = pg.transform.smoothscale(pg.image.load('UI_Pics/play.png'),(64,64))
+record_button = pg.transform.smoothscale(pg.image.load('UI_Pics/BtnR.png'),(64,64))
 # Main loop
 running = True
 while running:
     screen.fill((57, 54, 70))
-
+   
     mouse_pos = pg.mouse.get_pos()
 
     for event in pg.event.get():
@@ -205,7 +208,19 @@ while running:
             if icon_button1.is_clicked(adjusted_mouse_pos):
                 icon_button1.handle_click()
 
+    
     sidebar.draw(screen)
+    pg.draw.rect(screen, (79,69,87), (0,screen.get_height()-200,screen.get_width(),200))
+    pg.draw.rect(screen, (109,93,110), (0,screen.get_height()-200,screen.get_width()/3,200))
+
+    pause = pause_button.get_rect(center = (50,screen.get_height()-100))
+    play = play_button.get_rect(center = (150,screen.get_height()-100))
+    record = record_button.get_rect(center = (250,screen.get_height()-100))
+    screen.blit(pause_button,pause)
+    screen.blit(play_button,play)
+    screen.blit(record_button,record)
+
+
     pg.display.flip()
 
 pg.quit()
