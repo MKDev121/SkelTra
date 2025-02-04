@@ -215,20 +215,33 @@ while running:
             running = False
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_a:
-                char.Body.intial_pos = position = pg.mouse.get_pos()
-                name = "holder_" + str(len(char.Body.holders))
-                shared.current_holder_state = shared.holder_states[0]
+
                 keydown = True
         sidebar.handle_event(event)
         if event.type == pg.MOUSEBUTTONDOWN:
             # Only handle left mouse button clicks (button == 1)
-            if event.button == 1:
-                if icon_button.is_clicked(mouse_pos, sidebar.content_offset):
-                    icon_button.handle_click()
-                if icon_button1.is_clicked(mouse_pos, sidebar.content_offset):
-                    icon_button1.handle_click()
             shared.mouse_down = True
-
+            if event.button == 1:
+                if(shared.current_holder_state==shared.holder_states[1]):
+                    if icon_button.is_clicked(mouse_pos, sidebar.content_offset):
+                        icon_button.handle_click()
+                        shared.current_holder_state=shared.holder_states[3]
+                        shared.mouse_down=False
+                    if icon_button1.is_clicked(mouse_pos, sidebar.content_offset):
+                        icon_button1.handle_click()
+            
+                
+    # if(shared.current_holder_state==shared.holder_states[4]):
+    #     shared.current_holder_state=shared.holder_states[3]
+    #     shared.mouse_down=False
+    #     shared.mouse_state="buffer"     
+    if(shared.current_holder_state==shared.holder_states[3] and shared.mouse_down):
+            char.Body.intial_pos = position = pg.mouse.get_pos()
+            print(char.Body.intial_pos)
+            name = "holder_" + str(len(char.Body.holders))
+            shared.current_holder_state = shared.holder_states[0]
+            shared.mouse_down=False
+            shared.mouse_state="buffer"
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("grey")
     i = 1
@@ -251,14 +264,14 @@ while running:
 
     # IO
     if(shared.current_holder_state==shared.holder_states[0]):
-       
+       print("ehhehe")
        scale=mouse_pos-pg.Vector2(char.Body.intial_pos)
        pg.draw.rect(screen,"black",(char.Body.intial_pos,scale))
        pg.draw.rect(screen,"grey",(char.Body.intial_pos+pg.Vector2(4,4),scale-pg.Vector2(8,8)))
        if(shared.mouse_down):
           char.Body.add_holder(name,pos=position,scale=scale)
           shared.current_holder_state=shared.holder_states[1]
-          shared.mouse_state="buffer"
+          shared.mouse_down=False
     if(shared.mouse_state=="buffer"):
        shared.mouse_down=False
        shared.mouse_state=""
