@@ -204,8 +204,11 @@ paths = []
 running = True
 while running:
     screen.fill((57, 54, 70))
-    pg.draw.rect(screen, (79,69,87), (0,screen.get_height()-200,screen.get_width(),200))
-    pg.draw.rect(screen, (109,93,110), (0,screen.get_height()-200,screen.get_width()/5,200))  
+    panel = Panel(0,screen.get_height()-200,200,screen.get_width(),screen.get_width()/4,(79,69,87),(109,93,110))
+    panel.draw_rectangle(screen)
+    panel.draw_lines(screen,15,30,(255,255,255))
+    
+
     mouse_pos = pg.mouse.get_pos()
 
     for event in pg.event.get():
@@ -235,7 +238,6 @@ while running:
     screen.blit(pause_button,pause)
     screen.blit(play_button,play)
     screen.blit(record_button,record)
-
 
     pg.display.flip()
 
