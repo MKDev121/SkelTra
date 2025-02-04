@@ -228,6 +228,7 @@ rewind_button = pg.transform.smoothscale(pg.image.load('Main_UI/Rewind.png'),(64
 fast_forward_button = pg.transform.smoothscale(pg.image.load('Main_UI/Fast_Forward.png'),(64,64))
 
 
+
 while running:
     shared.mouse_pos = mouse_pos = pg.mouse.get_pos()
     panel=Panel(0,screen.get_height()-200,200,screen.get_width(),screen.get_width()/4,(79,69,87),(109,93,110))
@@ -303,6 +304,7 @@ while running:
     record = record_button.get_rect(center = (190, screen.get_height()-165))
     fastforward = fast_forward_button.get_rect(center = (50,screen.get_height()-165))
     rewind = rewind_button.get_rect(center = (330,screen.get_height()-165))
+    
     
     screen.blit(pause_button,pause)
     screen.blit(play_button,play)
