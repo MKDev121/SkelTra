@@ -27,6 +27,7 @@ font_button = pg.font.Font(None, 36)
 try:
     icon_image = pg.image.load("add-outline.png")
     icon_image = pg.transform.scale(icon_image, (30, 30))
+
 except pg.error:
     print("Error: Image 'add-outline.png' not found.")
     icon_image = None
@@ -107,6 +108,87 @@ class Button:
         if self.callback:
             self.callback()
 
+# Panel Class
+class Panel:
+    def __init__(self,x,y,height,width1,width2,color1,color2):
+        self.height = height
+        self.width1 = width1
+        self.width2 = width2
+        self.color1 = color1
+        self.color2 = color2
+        self.x = x
+        self.y = y
+
+    def draw_rectangle(self,screen):
+        pg.draw.rect(screen, self.color1, (self.x , self.y,self.width1 , self.height))
+        pg.draw.rect(screen, self.color2,(self.x , self.y, self.width2, self.height))
+
+    def draw_lines(self,screen,width_spacing,margin,color):
+        i = 0
+        while i < screen.get_width() - margin : 
+            pg.draw.rect(screen, color,(i + screen.get_width()/4, self.y,1 , self.height))
+            i += (screen.get_width()) / width_spacing
+
+# Function to handle "New Holder" addition
+def add_new_text_pair1():
+    global dynamic_texts_pair1, button1, icon_button
+    if dynamic_texts_pair1:
+        last_element = dynamic_texts_pair1[-1]
+        y_offset = last_element.rect.y + 60  # Place new element 60 pixels below the last one
+    else:
+        y_offset = icon_button.rect.y - 5  # Initial y-coordinate for the first element
+
+    # Shift all elements below the "New Holder" section down by 60 pixels
+    for element in sidebar.elements:
+        if element.rect.y >= y_offset:
+            element.rect.y += 60
+
+    # Add the new "New Holder" item
+    new_text = impObj.RenamableText(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
+    sidebar.add_element(new_text)
+    dynamic_texts_pair1.append(new_text)
+
+    # button1.rect.y +=20
+    # icon_button.rect.y +=20
+
+# Function to handle "New Bone" addition
+def add_new_text_pair2():
+    global dynamic_texts_pair1, dynamic_texts_pair2
+    # Calculate the difference between the number of "New Holder" items and "New Bone" items
+    difference = len(dynamic_texts_pair1) - len(dynamic_texts_pair2)
+    
+    # If there are no "New Holder" items, do nothing
+    if difference <= 0:
+        return
+
+    # Add the necessary number of "New Bone" items
+    for _ in range(difference):
+        if dynamic_texts_pair2:
+            last_element = dynamic_texts_pair2[-1]
+            y_offset = last_element.rect.y + 60  # Place new element 60 pixels below the last one
+        else:
+            y_offset = icon_button1.rect.y - 5  # Initial y-coordinate for the first element
+
+        # Shift all elements below the "New Bone" section down by 60 pixels
+        for element in sidebar.elements:
+            if element.rect.y >= y_offset:
+                element.rect.y += 60
+
+        # Add the new "New Bone" item
+        new_text = Text(f"New Bone Item {len(dynamic_texts_pair2) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
+        sidebar.add_element(new_text)
+        dynamic_texts_pair2.append(new_text)
+        
+# Function to recreate All Bones.
+def recreate_bones():
+    char.Rig.bones.clear()
+    for i in range(len(char.Body.holders)):
+        #list_holders=char.Body.holders.values()
+        holder=char.Body.holders["holder_"+str(i)]
+        bone_x=holder.position[0]+holder.scale[0]/2
+        char.Rig.add_bone(pg.Vector2(bone_x-3,holder.position[1]+10),(15,holder.scale.y-20))
+
+
 # Create scrollable sidebar
 sidebar = ScrollablePanel(SCREEN_WIDTH - 350, 0, 350, SCREEN_HEIGHT, (79, 69, 87))
 
@@ -133,49 +215,8 @@ dynamic_texts_pair2 = []
 button1 = Button(SCREEN_WIDTH - 270, 130, 245, 50, DARK_GRAY, (109, 93, 110), button_text1)
 button2 = Button(SCREEN_WIDTH - 270, 420, 245, 50, DARK_GRAY, (109, 93, 110), button_text2)
 
-# Function to handle "New Holder" addition
-def add_new_text_pair1():
-    global dynamic_texts_pair1, button1, icon_button
-    if dynamic_texts_pair1:
-        last_element = dynamic_texts_pair1[-1]
-        y_offset = last_element.rect.y + 60  # Place new element 60 pixels below the last one
-    else:
-        y_offset = icon_button.rect.y - 5  # Initial y-coordinate for the first element
-
-    # Shift all elements below the "New Holder" section down by 60 pixels
-    for element in sidebar.elements:
-        if element.rect.y >= y_offset:
-            element.rect.y += 60
-
-    # Add the new "New Holder" item
-    new_text = impObj.RenamableText(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
-    sidebar.add_element(new_text)
-    dynamic_texts_pair1.append(new_text)
-
-    # button1.rect.y +=20
-    # icon_button.rect.y +=20
-
-# Function to handle "New Bone" addition
-def add_new_text_pair2():
-    global dynamic_texts_pair2
-    if dynamic_texts_pair2:
-        last_element = dynamic_texts_pair2[-1]
-        y_offset = last_element.rect.y + 60  # Place new element 60 pixels below the last one
-    else:
-        y_offset = icon_button1.rect.y - 5  # Initial y-coordinate for the first element
-
-    # Shift all elements below the "New Bone" section down by 60 pixels
-    for element in sidebar.elements:
-        if element.rect.y >= y_offset:
-            element.rect.y += 60
-
-    # Add the new "New Bone" item
-    new_text = Text(f"New Bone Item {len(dynamic_texts_pair2) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
-    sidebar.add_element(new_text)
-    dynamic_texts_pair2.append(new_text)
-
 icon_button = Button(SCREEN_WIDTH - 325, 130, 50, 50, DARK_GRAY, (109, 93, 110), icon=icon_image, callback=add_new_text_pair1)
-icon_button1 = Button(SCREEN_WIDTH - 325, 420, 50, 50, DARK_GRAY, (109, 93, 110), icon=icon_image, callback=add_new_text_pair2)
+icon_button1 = Button(SCREEN_WIDTH - 325, 420, 60, 50, DARK_GRAY, (109, 93, 110), icon=icon_image, callback=add_new_text_pair2)
 
 sidebar.add_element(button1)
 sidebar.add_element(button2)
@@ -186,25 +227,6 @@ pause_button = pg.transform.smoothscale(pg.image.load('UI_Pics/pause.png'),(64,6
 play_button = pg.transform.smoothscale(pg.image.load('UI_Pics/play.png'),(64,64))
 record_button = pg.transform.smoothscale(pg.image.load('UI_Pics/BtnR.png'),(64,64))
 
-class Panel:
-    def __init__(self,x,y,height,width1,width2,color1,color2):
-        self.height = height
-        self.width1 = width1
-        self.width2 = width2
-        self.color1 = color1
-        self.color2 = color2
-        self.x = x
-        self.y = y
-
-    def draw_rectangle(self,screen):
-        pg.draw.rect(screen, self.color1, (self.x , self.y,self.width1 , self.height))
-        pg.draw.rect(screen, self.color2,(self.x , self.y, self.width2, self.height))
-
-    def draw_lines(self,screen,width_spacing,margin,color):
-        i = 0
-        while i < screen.get_width() - margin : 
-            pg.draw.rect(screen, color,(i + screen.get_width()/4, self.y,1 , self.height))
-            i += (screen.get_width()) / width_spacing
 while running:
     shared.mouse_pos = mouse_pos = pg.mouse.get_pos()
     panel=Panel(0,screen.get_height()-200,200,screen.get_width(),screen.get_width()/4,(79,69,87),(109,93,110))
@@ -213,16 +235,7 @@ while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_a:
-                #recreate all bones
-                char.Rig.bones.clear()
-                for i in range(len(char.Body.holders)):
-                    #list_holders=char.Body.holders.values()
-                    holder=char.Body.holders["holder_"+str(i)]
-                    bone_x=holder.position[0]+holder.scale[0]/2
-                    char.Rig.add_bone(pg.Vector2(bone_x-3,holder.position[1]+10),(15,holder.scale.y-20))
-                keydown = True
+        
         sidebar.handle_event(event)
         if event.type == pg.MOUSEBUTTONDOWN:
             # Only handle left mouse button clicks (button == 1)
@@ -235,6 +248,7 @@ while running:
                         shared.mouse_down=False
                     if icon_button1.is_clicked(mouse_pos, sidebar.content_offset):
                         icon_button1.handle_click()
+                        recreate_bones()
                 # Handle text object clicks
                 for element in sidebar.elements:
                     if isinstance(element, impObj.RenamableText):
