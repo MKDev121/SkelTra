@@ -186,7 +186,7 @@ def recreate_bones():
         #list_holders=char.Body.holders.values()
         holder=char.Body.holders["holder_"+str(i)]
         bone_x=holder.position[0]+holder.scale[0]/2
-        char.Rig.add_bone(pg.Vector2(bone_x-3,holder.position[1]+10),(30,holder.scale.y-20))
+        char.Rig.add_bone(pg.Vector2(bone_x-3,holder.position[1]+10),(15,holder.scale.y-20))
 
 
 # Create scrollable sidebar
@@ -301,8 +301,8 @@ while running:
     pause = pause_button.get_rect(center = (120, screen.get_height() - 165))
     play = play_button.get_rect(center = (258, screen.get_height()-165))
     record = record_button.get_rect(center = (190, screen.get_height()-165))
-    fastforward = fast_forward_button.get_rect(center = (330,screen.get_height()-165))
-    rewind = rewind_button.get_rect(center = (50,screen.get_height()-165))
+    fastforward = fast_forward_button.get_rect(center = (50,screen.get_height()-165))
+    rewind = rewind_button.get_rect(center = (330,screen.get_height()-165))
     
     screen.blit(pause_button,pause)
     screen.blit(play_button,play)
@@ -329,7 +329,7 @@ while running:
     #print(char.Body.holders.keys())
 
     # flip() the display to put your work on screen
-    char.Body.add_frame_part(screen)
+    char.Body.add_frame_part(screen, char.Rig)
     char.Rig.display_bones(screen)
     pg.display.flip()
    
