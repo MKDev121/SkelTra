@@ -1,5 +1,7 @@
 import pygame as pg
 import sys
+import tkinter as tk
+from tkinter import filedialog
 
 # Initialize pg
 pg.init()
@@ -146,7 +148,6 @@ def add_new_text_pair1():
     sidebar.add_element(new_text)
     dynamic_texts_pair1.append(new_text)
     
-    screen.blit()
     # Move the "New Holder" button and icon button down by 60 pixels
     button1.rect.y += 60
     icon_button.rect.y += 60
@@ -174,6 +175,16 @@ def add_new_text_pair2():
     button2.rect.y += 60
     icon_button1.rect.y += 60
 
+def open_file_explorer(paths):
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+
+    file_path = filedialog.askopenfilename(title = "Select a File", filetypes = [("All Files", "*.*")])
+
+    if file_path:
+        paths.append(file_path)
+
+
 # Create buttons and add to sidebar
 button1 = Button(SCREEN_WIDTH - 270, 270, 245, 50, DARK_GRAY, (109, 93, 110), button_text1)
 button2 = Button(SCREEN_WIDTH - 270, 420, 245, 50, DARK_GRAY, (109, 93, 110), button_text2)
@@ -188,7 +199,8 @@ sidebar.add_element(icon_button1)
 pause_button = pg.transform.smoothscale(pg.image.load('UI_Pics/pause.png'),(64,64))
 play_button = pg.transform.smoothscale(pg.image.load('UI_Pics/play.png'),(64,64))
 record_button = pg.transform.smoothscale(pg.image.load('UI_Pics/BtnR.png'),(64,64))
-# Main loop
+paths = []
+
 running = True
 while running:
     screen.fill((57, 54, 70))
@@ -209,9 +221,13 @@ while running:
             if icon_button1.is_clicked(adjusted_mouse_pos):
                 icon_button1.handle_click()
 
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_f:
+                open_file_explorer(paths)
+            elif event.key == pg.K_q:
+                running = False
     
     sidebar.draw(screen)
-
 
     pause = pause_button.get_rect(center = (50,screen.get_height()-100))
     play = play_button.get_rect(center = (150,screen.get_height()-100))
