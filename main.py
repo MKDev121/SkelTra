@@ -205,7 +205,7 @@ for heading in headings:
 
 # Create button text objects
 button_text1 = Text("New Holder", font_button, (244, 238, 224), 0, 0)
-button_text2 = Text("New Bone", font_button, (244, 238, 224), 0, 0)
+button_text2 = Text("Add Bones", font_button, (244, 238, 224), 0, 0)
 
 # Store dynamically created text objects
 dynamic_texts_pair1 = []
@@ -223,9 +223,12 @@ sidebar.add_element(button2)
 sidebar.add_element(icon_button)
 sidebar.add_element(icon_button1)
 
-pause_button = pg.transform.smoothscale(pg.image.load('UI_Pics/pause.png'),(64,64))
-play_button = pg.transform.smoothscale(pg.image.load('UI_Pics/play.png'),(64,64))
-record_button = pg.transform.smoothscale(pg.image.load('UI_Pics/BtnR.png'),(64,64))
+pause_button = pg.transform.smoothscale(pg.image.load('Main_UI/Pause.png'),(64,64))
+play_button = pg.transform.smoothscale(pg.image.load('Main_UI/Play.png'),(75,75))
+record_button = pg.transform.smoothscale(pg.image.load('Main_UI/Record.png'),(64,64))
+rewind_button = pg.transform.smoothscale(pg.image.load('Main_UI/Rewind.png'),(64,64))
+fast_forward_button = pg.transform.smoothscale(pg.image.load('Main_UI/Fast_Forward.png'),(64,64))
+
 
 while running:
     shared.mouse_pos = mouse_pos = pg.mouse.get_pos()
@@ -283,12 +286,23 @@ while running:
         j += (screen.get_height()) / 12
     panel.draw_rectangle(screen)
     panel.draw_lines(screen,15,30,(255,255,255))
-    pause = pause_button.get_rect(center = (50,screen.get_height()-100))
-    play = play_button.get_rect(center = (150,screen.get_height()-100))
-    record = record_button.get_rect(center = (250,screen.get_height()-100))
+    
+    pg.draw.line(screen, WHITE , (383, 835), (0, 835), 3)
+    pg.draw.line(screen, WHITE , (383, screen.get_height() - 200), (383, screen.get_height()), 3)
+    pg.draw.line(screen, WHITE , (1200, screen.get_height() - 200), (1200, screen.get_height()), 3)
+    
+
+    pause = pause_button.get_rect(center = (120, screen.get_height() - 165))
+    play = play_button.get_rect(center = (258, screen.get_height()-165))
+    record = record_button.get_rect(center = (190, screen.get_height()-165))
+    fastforward = fast_forward_button.get_rect(center = (50,screen.get_height()-165))
+    rewind = rewind_button.get_rect(center = (330,screen.get_height()-165))
+    
     screen.blit(pause_button,pause)
     screen.blit(play_button,play)
     screen.blit(record_button,record)
+    screen.blit(fast_forward_button, fastforward)
+    screen.blit(rewind_button, rewind)
 
     # IO
     if(shared.current_holder_state==shared.holder_states[0]):
