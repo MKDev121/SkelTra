@@ -186,7 +186,7 @@ def recreate_bones():
         #list_holders=char.Body.holders.values()
         holder=char.Body.holders["holder_"+str(i)]
         bone_x=holder.position[0]+holder.scale[0]/2
-        char.Rig.add_bone(pg.Vector2(bone_x-3,holder.position[1]+10),(15,holder.scale.y-20))
+        char.Rig.add_bone(pg.Vector2(bone_x-3,holder.position[1]+10),(30,holder.scale.y-20))
 
 
 # Create scrollable sidebar
