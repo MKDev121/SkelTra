@@ -21,6 +21,7 @@ pg.display.set_caption("Scrollable Sidebar")
 # Fonts
 font_heading = pg.font.Font(None, 48)
 font_button = pg.font.Font(None, 36)
+font_numbers = pg.font.Font(None, 24)  # Font for the numbers
 
 # Load Icon Image
 try:
@@ -104,8 +105,9 @@ class Button:
     def handle_click(self):
         if self.callback:
             self.callback()
+
 class Panel:
-    def __init__(self,x,y,height,width1,width2,color1,color2):
+    def __init__(self, x, y, height, width1, width2, color1, color2):
         self.height = height
         self.width1 = width1
         self.width2 = width2
@@ -114,15 +116,23 @@ class Panel:
         self.x = x
         self.y = y
 
-    def draw_rectangle(self,screen):
-        pg.draw.rect(screen, self.color1, (self.x , self.y,self.width1 , self.height))
-        pg.draw.rect(screen, self.color2,(self.x , self.y, self.width2, self.height))
+    def draw_rectangle(self, screen):
+        pg.draw.rect(screen, self.color1, (self.x, self.y, self.width1, self.height))
+        pg.draw.rect(screen, self.color2, (self.x, self.y, self.width2, self.height))
 
-    def draw_lines(self,screen,width_spacing,margin,color):
+    def draw_lines(self, screen, width_spacing, margin, color):
         i = 0
-        while i < screen.get_width() - margin : 
-            pg.draw.rect(screen, color,(i + screen.get_width()/4, self.y,1 , self.height))
+        number = 0
+        while i < screen.get_width() - margin:
+            x_position = i + screen.get_width() / 4
+            pg.draw.rect(screen, color, (x_position, self.y, 1, self.height))
+            
+            # Draw the number to the right of the line
+            number_text = Text(str(number), font_numbers, WHITE, x_position + 5, self.y + 10)
+            number_text.draw(screen, (x_position + 5, self.y + 10))
+            
             i += (screen.get_width()) / width_spacing
+            number += 15
 
 # Create scrollable sidebar
 sidebar = ScrollablePanel(SCREEN_WIDTH - 350, 0, 350, SCREEN_HEIGHT, (79, 69, 87))
@@ -206,7 +216,6 @@ def open_file_explorer(paths):
     if file_path:
         paths.append(file_path)
 
-
 # Create buttons and add to sidebar
 button1 = Button(SCREEN_WIDTH - 270, 270, 245, 50, DARK_GRAY, (109, 93, 110), button_text1)
 button2 = Button(SCREEN_WIDTH - 270, 420, 245, 50, DARK_GRAY, (109, 93, 110), button_text2)
@@ -246,10 +255,9 @@ paths = []
 running = True
 while running:
     screen.fill((57, 54, 70))
-    panel = Panel(0,screen.get_height()-200,200,screen.get_width(),screen.get_width()/4,(79,69,87),(109,93,110))
+    panel = Panel(0, screen.get_height() - 200, 200, screen.get_width(), screen.get_width() / 4, (79, 69, 87), (109, 93, 110))
     panel.draw_rectangle(screen)
-    panel.draw_lines(screen,15,30,(255,255,255))
-    
+    panel.draw_lines(screen, 15, 30, (255, 255, 255))
 
     mouse_pos = pg.mouse.get_pos()
 
@@ -274,12 +282,12 @@ while running:
     
     sidebar.draw(screen)
 
-    pause = pause_button.get_rect(center = (50,screen.get_height()-100))
-    play = play_button.get_rect(center = (150,screen.get_height()-100))
-    record = record_button.get_rect(center = (250,screen.get_height()-100))
-    screen.blit(pause_button,pause)
-    screen.blit(play_button,play)
-    screen.blit(record_button,record)
+    pause = pause_button.get_rect(center=(85, screen.get_height() - 167))
+    play = play_button.get_rect(center=(185, screen.get_height() - 167))
+    record = record_button.get_rect(center=(285, screen.get_height() - 167))
+    screen.blit(pause_button, pause)
+    screen.blit(play_button, play)
+    screen.blit(record_button, record)
 
     pg.display.flip()
 
