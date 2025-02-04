@@ -104,6 +104,25 @@ class Button:
     def handle_click(self):
         if self.callback:
             self.callback()
+class Panel:
+    def __init__(self,x,y,height,width1,width2,color1,color2):
+        self.height = height
+        self.width1 = width1
+        self.width2 = width2
+        self.color1 = color1
+        self.color2 = color2
+        self.x = x
+        self.y = y
+
+    def draw_rectangle(self,screen):
+        pg.draw.rect(screen, self.color1, (self.x , self.y,self.width1 , self.height))
+        pg.draw.rect(screen, self.color2,(self.x , self.y, self.width2, self.height))
+
+    def draw_lines(self,screen,width_spacing,margin,color):
+        i = 0
+        while i < screen.get_width() - margin : 
+            pg.draw.rect(screen, color,(i + screen.get_width()/4, self.y,1 , self.height))
+            i += (screen.get_width()) / width_spacing
 
 # Create scrollable sidebar
 sidebar = ScrollablePanel(SCREEN_WIDTH - 350, 0, 350, SCREEN_HEIGHT, (79, 69, 87))
@@ -179,7 +198,10 @@ def open_file_explorer(paths):
     root = tk.Tk()
     root.withdraw()  # Hide the root window
 
-    file_path = filedialog.askopenfilename(title = "Select a File", filetypes = [("All Files", "*.*"), ("P")])
+    file_path = filedialog.askopenfilename(title = "Select a File", 
+                                           filetypes = [("Portable Network Graphics", ".png"),
+                                                        ("Joint Photographic Experts Group", ".jpg"),
+                                                        ("Joint Photographic Experts Group", ".jpeg")])
 
     if file_path:
         paths.append(file_path)
