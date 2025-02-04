@@ -7,9 +7,10 @@ class bone:
 
     def __init__(self,position,size):
         self.position=position
-        self.rotation=[0,0]
+        self.rotation=0
         self.size=size
         self.color='green'
+        self.rect=pg.Rect(position.x,position.y,size[0],size[1])
 
 
 class HolderButton:
@@ -28,7 +29,7 @@ class holder:
         self.scale=scale
         self.rect=pg.rect.Rect(position,scale)
         self.selected=False
-        self.holder_buttons=[HolderButton(self.position+pg.Vector2(0,-20),(16,16),(0,0,255))]
+        self.holder_buttons=[HolderButton(self.position+pg.Vector2(0,-20),(16,16),(0,0,255)),HolderButton(self.position+pg.Vector2(0,-20),(16,16),(0,255,0))]
 
     def load(self,screen):
         pg.draw.rect(screen,'black',(self.position,self.scale),5)
@@ -36,8 +37,9 @@ class holder:
     def display_holder_buttons(self,screen):
         count=0
         for holder_button in self.holder_buttons:
-            pos=pg.Vector2(holder_button.position[0]+count*10,holder_button.position[1])
+            pos=pg.Vector2(holder_button.position[0]+count*20,holder_button.position[1])
             pg.draw.rect(screen,holder_button.color,(pos,holder_button.scale))
+            holder_button.rect.topleft=(pos.x,pos.y)
             if(holder_button.rect.collidepoint(shared.mouse_pos) and shared.mouse_down):
                 shared.current_selected_options=shared.holder_selected_options[count+1]
                 
