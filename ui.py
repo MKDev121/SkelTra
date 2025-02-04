@@ -66,9 +66,8 @@ class ScrollablePanel:
             elif event.button == 5:
                 self.scroll(30)
 
-# RenamableText Class
 class RenamableText:
-    def __init__(self, text, font, color, x, y):
+    def __init__(self, text, font, color, x, y, editable=False):
         self.text = text
         self.font = font
         self.color = color
@@ -81,6 +80,7 @@ class RenamableText:
         self.selection_start = 0
         self.selection_end = len(self.text)
         self.highlighted = False
+        self.editable = editable  # New flag to indicate if the text is editable
 
     def draw(self, screen, position):
         current_time = pg.time.get_ticks()
@@ -107,8 +107,9 @@ class RenamableText:
             # Draw cursor if visible
             if self.cursor_visible and not self.highlighted:
                 cursor_x = position[0] + self.font.size(self.text[:self.cursor_pos])[0] + 2
-                cursor_height = self.font.size(self.text)[1]  # Get the height of the text
-                pg.draw.line(screen, BLACK, (cursor_x, position[1] + 5), (cursor_x, position[1] + cursor_height - 5), 2)
+                # Calculate cursor height based on font metrics
+                cursor_height = self.font.get_height()  # Get the height of the font
+                pg.draw.line(screen, BLACK, (cursor_x, position[1]), (cursor_x, position[1] + cursor_height), 2)
 
         else:
             # Draw static text
@@ -117,7 +118,7 @@ class RenamableText:
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
-            if self.rect.collidepoint(event.pos):  # If text is clicked
+            if self.rect.collidepoint(event.pos) and self.editable:  # Only allow editing if editable is True
                 self.editing = True
                 self.cursor_pos = len(self.text)  # Place cursor at end
                 self.selection_start, self.selection_end = 0, len(self.text)  # Select all text
@@ -168,8 +169,8 @@ class RenamableText:
                             self.cursor_pos += 1
 
         return None  # Return None if no object is active
-
 # Button Class
+
 class Button:
     def __init__(self, x, y, width, height, color, hover_color, text_obj=None, icon=None, callback=None):
         self.rect = pg.Rect(x, y, width, height)
@@ -225,30 +226,6 @@ class Panel:
             i += (screen.get_width()) / width_spacing
             number += 15
 
-# Create scrollable sidebar
-sidebar = ScrollablePanel(SCREEN_WIDTH - 350, 0, 350, SCREEN_HEIGHT, (79, 69, 87))
-
-# Create initial headings
-headings = [
-    RenamableText("Character", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 20),
-    RenamableText("Holder", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 80),
-    RenamableText("Head", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 150),
-    RenamableText("Body", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 220),
-    RenamableText("Rig", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 365),
-    RenamableText("Sprite", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 500),
-]
-
-for heading in headings:
-    sidebar.add_element(heading)
-
-# Create button text objects
-button_text1 = RenamableText("New Holder", font_button, (244, 238, 224), 0, 0)
-button_text2 = RenamableText("New Bone", font_button, (244, 238, 224), 0, 0)
-
-# Store dynamically created text objects
-dynamic_texts_pair1 = []
-dynamic_texts_pair2 = []
-
 # Function to handle "New Holder" addition
 def add_new_text_pair1():
     global dynamic_texts_pair1, button1, icon_button
@@ -263,8 +240,8 @@ def add_new_text_pair1():
         if element.rect.y >= y_offset:
             element.rect.y += 60
 
-    # Add the new "New Holder" item
-    new_text = RenamableText(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
+    # Add the new "New Holder" item (editable)
+    new_text = RenamableText(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset, editable=True)
     sidebar.add_element(new_text)
     dynamic_texts_pair1.append(new_text)
     
@@ -286,6 +263,15 @@ def add_new_text_pair2():
         if element.rect.y >= y_offset:
             element.rect.y += 60
 
+    # Add the new "New Bone" item (editable)
+    new_text = RenamableText(f"New Bone Item {len(dynamic_texts_pair2) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset, editable=True)
+    sidebar.add_element(new_text)
+    dynamic_texts_pair2.append(new_text)
+
+    # Move the "New Bone" button and icon button down by 60 pixels
+    button2.rect.y += 60
+    icon_button1.rect.y += 60
+
     # Add the new "New Bone" item
     new_text = RenamableText(f"New Bone Item {len(dynamic_texts_pair2) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
     sidebar.add_element(new_text)
@@ -306,6 +292,30 @@ def open_file_explorer(paths):
 
     if file_path:
         paths.append(file_path)
+
+# Create scrollable sidebar
+sidebar = ScrollablePanel(SCREEN_WIDTH - 350, 0, 350, SCREEN_HEIGHT, (79, 69, 87))
+
+# Create initial headings (not editable)
+headings = [
+    RenamableText("Character", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 20, editable=False),
+    RenamableText("Holder", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 80, editable=False),
+    RenamableText("Head", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 150, editable=False),
+    RenamableText("Body", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 220, editable=False),
+    RenamableText("Rig", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 365, editable=False),
+    RenamableText("Sprite", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 500, editable=False),
+]
+
+for heading in headings:
+    sidebar.add_element(heading)
+
+# Create button text objects
+button_text1 = RenamableText("New Holder", font_button, (244, 238, 224), 0, 0)
+button_text2 = RenamableText("New Bone", font_button, (244, 238, 224), 0, 0)
+
+# Store dynamically created text objects
+dynamic_texts_pair1 = []
+dynamic_texts_pair2 = []
 
 # Create buttons and add to sidebar
 button1 = Button(SCREEN_WIDTH - 270, 270, 245, 50, DARK_GRAY, (109, 93, 110), button_text1)
