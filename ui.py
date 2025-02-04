@@ -179,7 +179,7 @@ def open_file_explorer(paths):
     root = tk.Tk()
     root.withdraw()  # Hide the root window
 
-    file_path = filedialog.askopenfilename(title = "Select a File", filetypes = [("All Files", "*.*")])
+    file_path = filedialog.askopenfilename(title = "Select a File", filetypes = [("All Files", "*.*"), ("P")])
 
     if file_path:
         paths.append(file_path)
