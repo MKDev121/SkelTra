@@ -42,7 +42,7 @@ class Body:
                 shared.mouse_state="buffer"
 
             if(shared.current_holder_state==shared.holder_states[2]):
-                location=r"test\1_ORK_"+input("Enter name: ")+".png"
+                location=impObj.open_file_explorer()
                 self.sprite.selected_frame.add_parts(holder,location)
                 shared.current_holder_state=shared.holder_states[1]
     def load_frame(self,screen):
