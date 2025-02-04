@@ -66,108 +66,17 @@ class ScrollablePanel:
             elif event.button == 5:
                 self.scroll(30)
 
-# RenamableText Class
-class RenamableText:
+# Text Class
+class Text:
     def __init__(self, text, font, color, x, y):
         self.text = text
         self.font = font
         self.color = color
         self.surface = self.font.render(self.text, True, self.color)
         self.rect = self.surface.get_rect(topleft=(x, y))
-        self.editing = False
-        self.cursor_visible = True
-        self.cursor_timer = pg.time.get_ticks()
-        self.cursor_pos = len(self.text)
-        self.selection_start = 0
-        self.selection_end = len(self.text)
-        self.highlighted = False
 
     def draw(self, screen, position):
-        current_time = pg.time.get_ticks()
-
-        if self.editing:
-            # Draw input box background
-            pg.draw.rect(screen, LIGHT_GRAY, self.rect.inflate(10, 10))  
-
-            # Check cursor blink
-            if current_time - self.cursor_timer > 500:  # Cursor blink speed in milliseconds
-                self.cursor_visible = not self.cursor_visible
-                self.cursor_timer = current_time
-
-            # Handle text rendering with highlighting
-            if self.highlighted:
-                pg.draw.rect(screen, BLUE, self.rect)  # Highlight full text
-                self.surface = self.font.render(self.text, True, BLACK)
-            else:
-                self.surface = self.font.render(self.text, True, BLACK)
-
-            # Draw text
-            screen.blit(self.surface, position)
-
-            # Draw cursor if visible
-            if self.cursor_visible and not self.highlighted:
-                cursor_x = position[0] + self.font.size(self.text[:self.cursor_pos])[0] + 2
-                cursor_height = self.font.size(self.text)[1]  # Get the height of the text
-                pg.draw.line(screen, BLACK, (cursor_x, position[1] + 5), (cursor_x, position[1] + cursor_height - 5), 2)
-
-        else:
-            # Draw static text
-            self.surface = self.font.render(self.text, True, WHITE)  # Change text color to white when not editing
-            screen.blit(self.surface, position)
-
-    def handle_event(self, event):
-        if event.type == pg.MOUSEBUTTONDOWN:
-            if self.rect.collidepoint(event.pos):  # If text is clicked
-                self.editing = True
-                self.cursor_pos = len(self.text)  # Place cursor at end
-                self.selection_start, self.selection_end = 0, len(self.text)  # Select all text
-                self.highlighted = True  # Enable highlighting
-                return self  # Return self to indicate this is the active object
-            else:
-                self.editing = False  # Disable editing if another object is clicked
-                self.highlighted = False
-        
-        elif event.type == pg.KEYDOWN and self.editing:
-            if event.key == pg.K_RETURN:  # Press Enter to save
-                self.editing = False
-                self.highlighted = False
-            
-            elif event.key == pg.K_BACKSPACE:  # Handle backspace
-                if self.highlighted:  # If all text is selected, remove everything
-                    self.text = ""
-                    self.cursor_pos = 0
-                    self.highlighted = False
-                elif self.cursor_pos > 0:
-                    self.text = self.text[:self.cursor_pos - 1] + self.text[self.cursor_pos:]
-                    self.cursor_pos -= 1
-            
-            elif event.key == pg.K_LEFT:  # Move cursor left
-                if self.cursor_pos > 0:
-                    self.cursor_pos -= 1
-                self.highlighted = False
-            
-            elif event.key == pg.K_RIGHT:  # Move cursor right
-                if self.cursor_pos < len(self.text):
-                    self.cursor_pos += 1
-                self.highlighted = False
-            
-            elif event.key == pg.K_a and pg.key.get_mods() & pg.KMOD_CTRL:  # Ctrl + A for select all
-                self.selection_start, self.selection_end = 0, len(self.text)
-                self.highlighted = True
-
-            else:
-                # Ensure character limit is not exceeded
-                if len(self.text) < 25:  # Character limit
-                    if event.unicode.isprintable():  # Only register printable characters
-                        if self.highlighted:  # If all text is selected, replace it
-                            self.text = event.unicode
-                            self.cursor_pos = len(self.text)
-                            self.highlighted = False
-                        else:
-                            self.text = self.text[:self.cursor_pos] + event.unicode + self.text[self.cursor_pos:]
-                            self.cursor_pos += 1
-
-        return None  # Return None if no object is active
+        screen.blit(self.surface, position)
 
 # Button Class
 class Button:
@@ -219,7 +128,7 @@ class Panel:
             pg.draw.rect(screen, color, (x_position, self.y, 1, self.height))
             
             # Draw the number to the right of the line
-            number_text = RenamableText(str(number), font_numbers, WHITE, x_position + 5, self.y + 10)
+            number_text = Text(str(number), font_numbers, WHITE, x_position + 5, self.y + 10)
             number_text.draw(screen, (x_position + 5, self.y + 10))
             
             i += (screen.get_width()) / width_spacing
@@ -230,20 +139,20 @@ sidebar = ScrollablePanel(SCREEN_WIDTH - 350, 0, 350, SCREEN_HEIGHT, (79, 69, 87
 
 # Create initial headings
 headings = [
-    RenamableText("Character", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 20),
-    RenamableText("Holder", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 80),
-    RenamableText("Head", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 150),
-    RenamableText("Body", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 220),
-    RenamableText("Rig", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 365),
-    RenamableText("Sprite", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 500),
+    Text("Character", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 20),
+    Text("Holder", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 80),
+    Text("Head", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 150),
+    Text("Body", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 220),
+    Text("Rig", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 365),
+    Text("Sprite", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 500),
 ]
 
 for heading in headings:
     sidebar.add_element(heading)
 
 # Create button text objects
-button_text1 = RenamableText("New Holder", font_button, (244, 238, 224), 0, 0)
-button_text2 = RenamableText("New Bone", font_button, (244, 238, 224), 0, 0)
+button_text1 = Text("New Holder", font_button, (244, 238, 224), 0, 0)
+button_text2 = Text("New Bone", font_button, (244, 238, 224), 0, 0)
 
 # Store dynamically created text objects
 dynamic_texts_pair1 = []
@@ -264,7 +173,7 @@ def add_new_text_pair1():
             element.rect.y += 60
 
     # Add the new "New Holder" item
-    new_text = RenamableText(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
+    new_text = Text(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
     sidebar.add_element(new_text)
     dynamic_texts_pair1.append(new_text)
     
@@ -287,7 +196,7 @@ def add_new_text_pair2():
             element.rect.y += 60
 
     # Add the new "New Bone" item
-    new_text = RenamableText(f"New Bone Item {len(dynamic_texts_pair2) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
+    new_text = Text(f"New Bone Item {len(dynamic_texts_pair2) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
     sidebar.add_element(new_text)
     dynamic_texts_pair2.append(new_text)
 
@@ -324,9 +233,6 @@ record_button = pg.transform.smoothscale(pg.image.load('UI_Pics/BtnMisc.png'),(6
 
 paths = []
 
-# Track the active text object being edited
-active_text_object = None
-
 running = True
 while running:
     screen.fill((57, 54, 70))
@@ -349,23 +255,11 @@ while running:
             if icon_button1.is_clicked(adjusted_mouse_pos):
                 icon_button1.handle_click()
 
-            # Handle text object clicks
-            for element in sidebar.elements:
-                if isinstance(element, RenamableText):
-                    result = element.handle_event(event)
-                    if result:  # If a text object is clicked, set it as active
-                        if active_text_object and active_text_object != result:
-                            active_text_object.editing = False  # Reset the previous active object
-                        active_text_object = result
-
         if event.type == pg.KEYDOWN:
-            if active_text_object:
-                active_text_object.handle_event(event)
-            else:
-                if event.key == pg.K_f:
-                    open_file_explorer(paths)
-                elif event.key == pg.K_q:
-                    running = False
+            if event.key == pg.K_f:
+                open_file_explorer(paths)
+            elif event.key == pg.K_q:
+                running = False
     
     sidebar.draw(screen)
 
