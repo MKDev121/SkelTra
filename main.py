@@ -151,12 +151,9 @@ def add_new_text_pair1():
     new_text = Text(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
     sidebar.add_element(new_text)
     dynamic_texts_pair1.append(new_text)
-<<<<<<< HEAD
 
     # button1.rect.y +=20
     # icon_button.rect.y +=20
-=======
->>>>>>> c2b922067571980ba3d48b8a5dd9aa664c61d70f
 
 # Function to handle "New Bone" addition
 def add_new_text_pair2():
@@ -221,7 +218,6 @@ while running:
         j += (screen.get_height()) / 12
 
     # IO
-<<<<<<< HEAD
     if(shared.current_holder_state==shared.holder_states[0]):
        
        scale=mouse_pos-pg.Vector2(char.Body.intial_pos)
@@ -234,20 +230,6 @@ while running:
     if(shared.mouse_state=="buffer"):
        shared.mouse_down=False
        shared.mouse_state=""
-=======
-    if shared.current_holder_state == shared.holder_states[0]:
-        scale = mouse_pos - pg.Vector2(char.Body.intial_pos)
-        pg.draw.rect(screen, "black", (char.Body.intial_pos, scale))
-        pg.draw.rect(screen, "grey", (char.Body.intial_pos + pg.Vector2(10, 10), scale - pg.Vector2(20, 20)))
-        if shared.mouse_down:
-            char.Body.add_holder(name, pos=position, scale=scale)
-            shared.current_holder_state = shared.holder_states[1]
-            shared.mouse_state = "buffer"
-    if shared.mouse_state == "buffer":
-        shared.mouse_down = False
-        shared.mouse_state = ""
-
->>>>>>> c2b922067571980ba3d48b8a5dd9aa664c61d70f
     # RENDER YOUR GAME HERE
     char.load(screen)
     char.Body.load_frame(screen)

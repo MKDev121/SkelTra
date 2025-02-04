@@ -192,7 +192,8 @@ record_button = pg.transform.smoothscale(pg.image.load('UI_Pics/BtnR.png'),(64,6
 running = True
 while running:
     screen.fill((57, 54, 70))
-   
+    pg.draw.rect(screen, (79,69,87), (0,screen.get_height()-200,screen.get_width(),200))
+    pg.draw.rect(screen, (109,93,110), (0,screen.get_height()-200,screen.get_width()/5,200))  
     mouse_pos = pg.mouse.get_pos()
 
     for event in pg.event.get():
@@ -210,8 +211,7 @@ while running:
 
     
     sidebar.draw(screen)
-    pg.draw.rect(screen, (79,69,87), (0,screen.get_height()-200,screen.get_width(),200))
-    pg.draw.rect(screen, (109,93,110), (0,screen.get_height()-200,screen.get_width()/3,200))
+
 
     pause = pause_button.get_rect(center = (50,screen.get_height()-100))
     play = play_button.get_rect(center = (150,screen.get_height()-100))
