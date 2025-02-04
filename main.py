@@ -2,7 +2,7 @@ import pygame as pg
 import character
 import shared 
 import math
-
+import impObj
 # pg setup
 pg.init()
 clock = pg.time.Clock()
@@ -148,7 +148,7 @@ def add_new_text_pair1():
             element.rect.y += 60
 
     # Add the new "New Holder" item
-    new_text = Text(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
+    new_text = impObj.RenamableText(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
     sidebar.add_element(new_text)
     dynamic_texts_pair1.append(new_text)
 
@@ -208,14 +208,20 @@ class Panel:
 while running:
     shared.mouse_pos = mouse_pos = pg.mouse.get_pos()
     panel=Panel(0,screen.get_height()-200,200,screen.get_width(),screen.get_width()/4,(79,69,87),(109,93,110))
-    # poll for events
+    # poll for events  
     # pg.QUIT event means the user clicked X to close your window
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_a:
-
+                #recreate all bones
+                char.Rig.bones.clear()
+                for i in range(len(char.Body.holders)):
+                    #list_holders=char.Body.holders.values()
+                    holder=char.Body.holders["holder_"+str(i)]
+                    bone_x=holder.position[0]+holder.scale[0]/2
+                    char.Rig.add_bone(pg.Vector2(bone_x-3,holder.position[1]+10),(15,holder.scale.y-20))
                 keydown = True
         sidebar.handle_event(event)
         if event.type == pg.MOUSEBUTTONDOWN:
@@ -229,6 +235,14 @@ while running:
                         shared.mouse_down=False
                     if icon_button1.is_clicked(mouse_pos, sidebar.content_offset):
                         icon_button1.handle_click()
+                # Handle text object clicks
+                for element in sidebar.elements:
+                    if isinstance(element, impObj.RenamableText):
+                        result = element.handle_event(event)
+                        if result:  # If a text object is clicked, set it as active
+                            if active_text_object and active_text_object != result:
+                                active_text_object.editing = False  # Reset the previous active object
+                            active_text_object = result
             
                 
     # if(shared.current_holder_state==shared.holder_states[4]):
@@ -264,10 +278,10 @@ while running:
 
     # IO
     if(shared.current_holder_state==shared.holder_states[0]):
-       print("ehhehe")
+
        scale=mouse_pos-pg.Vector2(char.Body.intial_pos)
-       pg.draw.rect(screen,"black",(char.Body.intial_pos,scale))
-       pg.draw.rect(screen,"grey",(char.Body.intial_pos+pg.Vector2(4,4),scale-pg.Vector2(8,8)))
+       pg.draw.rect(screen,"black",(char.Body.intial_pos,scale),5)
+       #pg.draw.rect(screen,"grey",(char.Body.intial_pos+pg.Vector2(4,4),scale-pg.Vector2(8,8)))
        if(shared.mouse_down):
           char.Body.add_holder(name,pos=position,scale=scale)
           shared.current_holder_state=shared.holder_states[1]
@@ -278,11 +292,14 @@ while running:
     # RENDER YOUR GAME HERE
     char.load(screen)
     char.Body.load_frame(screen)
-    char.Body.add_frame_part()
+    #print(char.Body.holders.keys())
 
     # flip() the display to put your work on screen
     sidebar.draw(screen)
+    char.Body.add_frame_part(screen)
+    char.Rig.display_bones(screen)
     pg.display.flip()
+   
     clock.tick(60)  # limits FPS to 60
 
 pg.quit()
