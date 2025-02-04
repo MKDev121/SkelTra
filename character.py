@@ -22,14 +22,16 @@ class Rig:
 
     def display_bones(self,screen):
         for bone in self.bones:
-            img=pg.transform.rotate(pg.transform.smoothscale(pg.image.load(r'bone.png'),bone.size),bone.rotation*10)
+            img=pg.transform.rotate(pg.transform.smoothscale(pg.image.load(r'bone.png'),bone.size),bone.rotation)
             #pg.draw.rect(screen,'green',(bone.position,bone.size),border_radius=5)
             screen.blit(img,bone.position)
             #pg.surface.Surface().blit()
     def rotate_bone(self,bone):
-        y=shared.mouse_pos[1]-bone.position.y
-        x=shared.mouse_pos[0]-bone.position.x
-        bone.rotation=math.atan(x/y)
+        y=shared.mouse_pos[1]-(bone.position.y+bone.size[1]/2)
+        x=shared.mouse_pos[0]-(bone.position.x+bone.size[0]/2)
+        bone.position.x=bone.size[0]/2
+        bone.position.y=bone.size[1]/2
+        bone.rotation=(180/math.pi)*-math.atan2(y,x)
 
 class Sprite:
 

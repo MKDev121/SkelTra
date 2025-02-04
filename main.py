@@ -287,7 +287,7 @@ while running:
     panel.draw_rectangle(screen)
     panel.draw_lines(screen,15,30,(255,255,255))
     
-    pg.draw.line(screen, WHITE , (383, 835), (0, 835), 3)
+    pg.draw.line(screen, WHITE , (383, 750), (0, 750), 3)
     pg.draw.line(screen, WHITE , (383, screen.get_height() - 200), (383, screen.get_height()), 3)
     pg.draw.line(screen, WHITE , (1200, screen.get_height() - 200), (1200, screen.get_height()), 3)
     
@@ -295,8 +295,8 @@ while running:
     pause = pause_button.get_rect(center = (120, screen.get_height() - 165))
     play = play_button.get_rect(center = (258, screen.get_height()-165))
     record = record_button.get_rect(center = (190, screen.get_height()-165))
-    fastforward = fast_forward_button.get_rect(center = (50,screen.get_height()-165))
-    rewind = rewind_button.get_rect(center = (330,screen.get_height()-165))
+    fastforward = fast_forward_button.get_rect(center = (330,screen.get_height()-165))
+    rewind = rewind_button.get_rect(center = (50,screen.get_height()-165))
     
     screen.blit(pause_button,pause)
     screen.blit(play_button,play)
