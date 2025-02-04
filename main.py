@@ -2,13 +2,13 @@ import pygame as pg
 import character
 import shared 
 import math
+
 # pg setup
 pg.init()
-#screen = pg.display.set_mode((1280, 720))
 clock = pg.time.Clock()
 running = True
 pg.display.set_caption("SkelTra")
-char=character.Character()
+char = character.Character()
 WHITE = (255, 255, 255)
 LIGHT_GRAY = (200, 200, 200)
 DARK_GRAY = (100, 100, 100)
@@ -18,7 +18,6 @@ BLACK = (0, 0, 0)
 # Initialize screen
 screen = pg.display.set_mode()
 SCREEN_WIDTH, SCREEN_HEIGHT = screen.get_size()
-#pg.display.set_caption("Scrollable Sidebar")
 
 # Fonts
 font_heading = pg.font.Font(None, 48)
@@ -62,9 +61,9 @@ class ScrollablePanel:
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
-            if event.button == 4:
+            if event.button == 4:  # Scroll up
                 self.scroll(-30)
-            elif event.button == 5:
+            elif event.button == 5:  # Scroll down
                 self.scroll(30)
 
 # Text Class
@@ -100,8 +99,9 @@ class Button:
     def check_hover(self, mouse_pos):
         self.hovered = self.rect.collidepoint(mouse_pos)
 
-    def is_clicked(self, mouse_pos):
-        return self.rect.collidepoint(mouse_pos)
+    def is_clicked(self, mouse_pos, content_offset):
+        adjusted_rect = self.rect.move(0, -content_offset)
+        return adjusted_rect.collidepoint(mouse_pos)
 
     def handle_click(self):
         if self.callback:
@@ -114,8 +114,6 @@ sidebar = ScrollablePanel(SCREEN_WIDTH - 350, 0, 350, SCREEN_HEIGHT, (79, 69, 87
 headings = [
     Text("Character", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 20),
     Text("Holder", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 80),
-    #Text("Head", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 150),
-    #Text("Body", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 220),
     Text("Rig", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 365),
     Text("Sprite", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 500),
 ]
@@ -131,20 +129,18 @@ button_text2 = Text("New Bone", font_button, (244, 238, 224), 0, 0)
 dynamic_texts_pair1 = []
 dynamic_texts_pair2 = []
 
-
-
 # Create buttons and add to sidebar
-button1 = Button(SCREEN_WIDTH - 270, 120, 245, 50, DARK_GRAY, (109, 93, 110), button_text1)
+button1 = Button(SCREEN_WIDTH - 270, 130, 245, 50, DARK_GRAY, (109, 93, 110), button_text1)
 button2 = Button(SCREEN_WIDTH - 270, 420, 245, 50, DARK_GRAY, (109, 93, 110), button_text2)
+
 # Function to handle "New Holder" addition
 def add_new_text_pair1():
-    global dynamic_texts_pair1,button1,icon_button
+    global dynamic_texts_pair1, button1, icon_button
     if dynamic_texts_pair1:
         last_element = dynamic_texts_pair1[-1]
         y_offset = last_element.rect.y + 60  # Place new element 60 pixels below the last one
     else:
-        y_offset = icon_button.rect.y-5
-     # Initial y-coordinate for the first element
+        y_offset = icon_button.rect.y - 5  # Initial y-coordinate for the first element
 
     # Shift all elements below the "New Holder" section down by 60 pixels
     for element in sidebar.elements:
@@ -155,9 +151,12 @@ def add_new_text_pair1():
     new_text = Text(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
     sidebar.add_element(new_text)
     dynamic_texts_pair1.append(new_text)
+<<<<<<< HEAD
 
     # button1.rect.y +=20
     # icon_button.rect.y +=20
+=======
+>>>>>>> c2b922067571980ba3d48b8a5dd9aa664c61d70f
 
 # Function to handle "New Bone" addition
 def add_new_text_pair2():
@@ -166,8 +165,7 @@ def add_new_text_pair2():
         last_element = dynamic_texts_pair2[-1]
         y_offset = last_element.rect.y + 60  # Place new element 60 pixels below the last one
     else:
-        
-        y_offset = icon_button1.rect.y-5  # Initial y-coordinate for the first element
+        y_offset = icon_button1.rect.y - 5  # Initial y-coordinate for the first element
 
     # Shift all elements below the "New Bone" section down by 60 pixels
     for element in sidebar.elements:
@@ -178,12 +176,9 @@ def add_new_text_pair2():
     new_text = Text(f"New Bone Item {len(dynamic_texts_pair2) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
     sidebar.add_element(new_text)
     dynamic_texts_pair2.append(new_text)
-    # button2.rect.y +=10
-    # icon_button1.rect.y +=10
-icon_button = Button(SCREEN_WIDTH - 325, 120, 50, 50, DARK_GRAY, (109, 93, 110), icon=icon_image, callback=add_new_text_pair1)
+
+icon_button = Button(SCREEN_WIDTH - 325, 130, 50, 50, DARK_GRAY, (109, 93, 110), icon=icon_image, callback=add_new_text_pair1)
 icon_button1 = Button(SCREEN_WIDTH - 325, 420, 50, 50, DARK_GRAY, (109, 93, 110), icon=icon_image, callback=add_new_text_pair2)
-
-
 
 sidebar.add_element(button1)
 sidebar.add_element(button2)
@@ -191,46 +186,42 @@ sidebar.add_element(icon_button)
 sidebar.add_element(icon_button1)
 
 while running:
-    shared.mouse_pos=mouse_pos=pg.mouse.get_pos()
+    shared.mouse_pos = mouse_pos = pg.mouse.get_pos()
     # poll for events
     # pg.QUIT event means the user clicked X to close your window
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
-        if event.type==pg.KEYDOWN:
-           if event.key ==pg.K_a:
-            char.Body.intial_pos = position = pg.mouse.get_pos()
-            name="holder_"+str(len(char.Body.holders))
-            shared.current_holder_state=shared.holder_states[0]
-            
-
-            keydown=True
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_a:
+                char.Body.intial_pos = position = pg.mouse.get_pos()
+                name = "holder_" + str(len(char.Body.holders))
+                shared.current_holder_state = shared.holder_states[0]
+                keydown = True
         sidebar.handle_event(event)
-        if event.type==pg.MOUSEBUTTONDOWN:
-            if icon_button.is_clicked(mouse_pos):
-                icon_button.handle_click()
-            if icon_button1.is_clicked(mouse_pos):
-                icon_button1.handle_click()
-            shared.mouse_down=True
-    
+        if event.type == pg.MOUSEBUTTONDOWN:
+            # Only handle left mouse button clicks (button == 1)
+            if event.button == 1:
+                if icon_button.is_clicked(mouse_pos, sidebar.content_offset):
+                    icon_button.handle_click()
+                if icon_button1.is_clicked(mouse_pos, sidebar.content_offset):
+                    icon_button1.handle_click()
+            shared.mouse_down = True
+
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("grey")
     i = 1
     while i < screen.get_width():
-        pg.draw.rect(screen,(0,0,0),(i,0,1,screen.get_height()),5,1)
-        i += (screen.get_width())/20
+        pg.draw.rect(screen, (0, 0, 0), (i, 0, 1, screen.get_height()), 5, 1)
+        i += (screen.get_width()) / 20
 
     j = 1
     while j < screen.get_height():
-        pg.draw.rect(screen,(0,0,0),(0,j,screen.get_width(),1),5,1)
-        j += (screen.get_height())/12
-
-    
-    # draw a rectangle
-    # pg.draw.rect(screen, (0,0,0), (1,screen.get_height(),100,150)) #-> Rect
-    # pg.draw.rect(screen, (0,0,0), (10,10,100,150), width=0, border_radius=0, border_top_left_radius=-1, border_top_right_radius=-1, border_bottom_left_radius=-1, border_bottom_right_radius=-1) #-> Rect
+        pg.draw.rect(screen, (0, 0, 0), (0, j, screen.get_width(), 1), 5, 1)
+        j += (screen.get_height()) / 12
 
     # IO
+<<<<<<< HEAD
     if(shared.current_holder_state==shared.holder_states[0]):
        
        scale=mouse_pos-pg.Vector2(char.Body.intial_pos)
@@ -243,12 +234,26 @@ while running:
     if(shared.mouse_state=="buffer"):
        shared.mouse_down=False
        shared.mouse_state=""
+=======
+    if shared.current_holder_state == shared.holder_states[0]:
+        scale = mouse_pos - pg.Vector2(char.Body.intial_pos)
+        pg.draw.rect(screen, "black", (char.Body.intial_pos, scale))
+        pg.draw.rect(screen, "grey", (char.Body.intial_pos + pg.Vector2(10, 10), scale - pg.Vector2(20, 20)))
+        if shared.mouse_down:
+            char.Body.add_holder(name, pos=position, scale=scale)
+            shared.current_holder_state = shared.holder_states[1]
+            shared.mouse_state = "buffer"
+    if shared.mouse_state == "buffer":
+        shared.mouse_down = False
+        shared.mouse_state = ""
+
+>>>>>>> c2b922067571980ba3d48b8a5dd9aa664c61d70f
     # RENDER YOUR GAME HERE
     char.load(screen)
     char.Body.load_frame(screen)
     char.Body.add_frame_part()
+
     # flip() the display to put your work on screen
-    
     sidebar.draw(screen)
     pg.display.flip()
     clock.tick(60)  # limits FPS to 60
