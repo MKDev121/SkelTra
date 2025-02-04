@@ -21,7 +21,7 @@ class holder:
 
     def load(self,screen):
         pg.draw.rect(screen,'black',(self.position,self.scale))
-        pg.draw.rect(screen,'grey',(self.position+pg.Vector2(10,10),self.scale-pg.Vector2(20,20)))
+        pg.draw.rect(screen,'grey',(self.position+pg.Vector2(4,4),self.scale-pg.Vector2(8,8)))
   
 class frame:
     def __init__(self):

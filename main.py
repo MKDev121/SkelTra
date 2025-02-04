@@ -155,7 +155,7 @@ def add_new_text_pair1():
     new_text = Text(f"New Holder Item {len(dynamic_texts_pair1) + 1}", font_button, (234, 248, 224), SCREEN_WIDTH - 325, y_offset)
     sidebar.add_element(new_text)
     dynamic_texts_pair1.append(new_text)
-    
+
     # button1.rect.y +=20
     # icon_button.rect.y +=20
 
@@ -235,7 +235,7 @@ while running:
        
        scale=mouse_pos-pg.Vector2(char.Body.intial_pos)
        pg.draw.rect(screen,"black",(char.Body.intial_pos,scale))
-       pg.draw.rect(screen,"grey",(char.Body.intial_pos+pg.Vector2(10,10),scale-pg.Vector2(20,20)))
+       pg.draw.rect(screen,"grey",(char.Body.intial_pos+pg.Vector2(4,4),scale-pg.Vector2(8,8)))
        if(shared.mouse_down):
           char.Body.add_holder(name,pos=position,scale=scale)
           shared.current_holder_state=shared.holder_states[1]
