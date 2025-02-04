@@ -20,12 +20,12 @@ screen = pg.display.set_mode()
 SCREEN_WIDTH, SCREEN_HEIGHT = screen.get_size()
 
 # Fonts
-font_heading = pg.font.Font(None, 48)
-font_button = pg.font.Font(None, 36)
+font_heading = pg.font.Font("Goldman-Bold.ttf", 32)
+font_button = pg.font.Font("Goldman-Regular.ttf", 25)
 
 # Load Icon Image
 try:
-    icon_image = pg.image.load("add-outline.png")
+    icon_image = pg.image.load("Main_UI/add-outline.png")
     icon_image = pg.transform.scale(icon_image, (30, 30))
 
 except pg.error:
@@ -186,7 +186,7 @@ def recreate_bones():
         #list_holders=char.Body.holders.values()
         holder=char.Body.holders["holder_"+str(i)]
         bone_x=holder.position[0]+holder.scale[0]/2
-        char.Rig.add_bone(pg.Vector2(bone_x-3,holder.position[1]+10),(30,holder.scale.y-20))
+        char.Rig.add_bone(pg.Vector2(bone_x-3,holder.position[1]+10),(15,holder.scale.y-20))
 
 
 # Create scrollable sidebar
@@ -194,14 +194,12 @@ sidebar = ScrollablePanel(SCREEN_WIDTH - 350, 0, 350, SCREEN_HEIGHT, (79, 69, 87
 
 # Create initial headings
 headings = [
-    Text("Character", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 20),
-    Text("Holder", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 80),
+    Text("Character", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 25),
+    Text("Holder", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 90),
     Text("Rig", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 365),
     Text("Sprite", font_heading, (244, 238, 224), SCREEN_WIDTH - 325, 500),
+    Text("Animation", font_heading, (244, 238, 224), SCREEN_WIDTH - 1510 , 25),
 ]
-
-for heading in headings:
-    sidebar.add_element(heading)
 
 # Create button text objects
 button_text1 = Text("New Holder", font_button, (244, 238, 224), 0, 0)
@@ -287,17 +285,25 @@ while running:
         j += (screen.get_height()) / 12
     panel.draw_rectangle(screen)
     panel.draw_lines(screen,15,30,(255,255,255))
-    
-    pg.draw.line(screen, WHITE , (383, 750), (0, 750), 3)
+
+    sidebar.draw(screen)
+
+    pg.draw.line(screen, WHITE , (383, screen.get_height() - 125), (0, screen.get_height() - 125), 3)
     pg.draw.line(screen, WHITE , (383, screen.get_height() - 200), (383, screen.get_height()), 3)
-    pg.draw.line(screen, WHITE , (1200, screen.get_height() - 200), (1200, screen.get_height()), 3)
-    
+    pg.draw.line(screen, WHITE , (1185, screen.get_height() - 1200), (1185, screen.get_height()), 3)
+    pg.draw.line(screen, WHITE , (1184, screen.get_height() - 1200), (1184, screen.get_height()), 3)
+    pg.draw.line(screen, WHITE , (0, screen.get_height() - 880), (screen.get_width(), screen.get_height() - 880), 3)
+
+    pg.draw.rect(screen, (79, 69, 87), (0, 0, screen.get_width() - 350 , screen.get_height() - 880))
+
+    for heading in headings:
+        heading.draw(screen, heading.rect.topleft)
 
     pause = pause_button.get_rect(center = (120, screen.get_height() - 165))
     play = play_button.get_rect(center = (258, screen.get_height()-165))
     record = record_button.get_rect(center = (190, screen.get_height()-165))
-    fastforward = fast_forward_button.get_rect(center = (330,screen.get_height()-165))
-    rewind = rewind_button.get_rect(center = (50,screen.get_height()-165))
+    fastforward = fast_forward_button.get_rect(center = (50,screen.get_height()-165))
+    rewind = rewind_button.get_rect(center = (330,screen.get_height()-165))
     
     
     screen.blit(pause_button,pause)
@@ -325,8 +331,7 @@ while running:
     #print(char.Body.holders.keys())
 
     # flip() the display to put your work on screen
-    sidebar.draw(screen)
-    char.Body.add_frame_part(screen,char.Rig)
+    char.Body.add_frame_part(screen, char.Rig)
     char.Rig.display_bones(screen)
     pg.display.flip()
    
