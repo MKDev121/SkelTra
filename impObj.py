@@ -1,6 +1,8 @@
 import pygame as pg
 import shared 
-
+import tkinter as tk
+from tkinter import filedialog
+import os
 class bone:
 
     def __init__(self,color):
@@ -17,33 +19,29 @@ class holder:
         self.position=position
         self.rotation=rotation
         self.scale=scale
+        self.rect=pg.rect.Rect(position,scale)
 
     def load(self,screen):
-        
-        if(shared.current_holder_state==shared.holder_states[2]):
-
-
-            pg.draw.rect(screen,'black',(self.position,self.scale))
-            pg.draw.rect(screen,'grey',(self.position+pg.Vector2(10,10),self.scale-pg.Vector2(20,20)))
-        
+        pg.draw.rect(screen,'black',(self.position,self.scale))
+        pg.draw.rect(screen,'grey',(self.position+pg.Vector2(4,4),self.scale-pg.Vector2(8,8)))
+  
 class frame:
     def __init__(self):
-        self.parts=[]
-    def add_parts(self,location):
-        self.parts.append(pg.image.load(location))
+        self.parts={}
+    def add_parts(self,holder,location):
+        self.parts[holder]=pg.transform.smoothscale(pg.image.load(location),holder.scale)
     # def load_frame(self,pos,screen=pg.display.set_mode(0,0)):
     #     for part in self.parts:
     #         screen.blit(part,pos)
-
-
-class Button: #class
-    def __init__(icon,colour,cuisine_type): #method
-        self.restaurant_name = restaurant_name
-        self.cuisine_type = cuisine_type
+def open_file_explorer():
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+    file_path = filedialog.askopenfilename(title = "Select a File", 
+                                           filetypes = [("Portable Network Graphics", ".png"),
+                                                        ("Joint Photographic Experts Group", ".jpg"),
+                                                        ("Joint Photographic Experts Group", ".jpeg")])
     
-    def describe_restaurant(self): #method
-        print(f"the name of the restaurant is {self.restaurant_name}")
-        print(f"cuisine type : {self.cuisine_type}")
+    if file_path:   
+        return file_path
+        #paths.append(file_path)
 
-    def open_restaurant(self): #method
-        print("OPEN")
