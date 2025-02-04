@@ -296,7 +296,7 @@ while running:
 
     # flip() the display to put your work on screen
     sidebar.draw(screen)
-    char.Body.add_frame_part(screen)
+    char.Body.add_frame_part(screen,char.Rig)
     char.Rig.display_bones(screen)
     pg.display.flip()
    

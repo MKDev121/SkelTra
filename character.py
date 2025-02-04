@@ -41,10 +41,11 @@ class Body:
     def add_holder(self,name="",pos=pg.Vector2(0,0),scale=[100,100]):
         self.holders[name]=impObj.holder(position=pos,scale=scale)
     
-    def add_frame_part(self,screen):
+    def add_frame_part(self,screen,rig):
+        
         for holder in self.holders.values():
             if(holder.rect.collidepoint(shared.mouse_pos) and shared.mouse_down):
-                shared.current_holder_state=shared.holder_states[2]
+                shared.current_holder_state =shared.holder_states[2]
                 holder.selected=True
                 shared.mouse_down=False
 

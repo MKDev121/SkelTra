@@ -10,6 +10,7 @@ class bone:
         self.rotation=[0,0]
         self.size=size
         self.color='green'
+        self.rect=pg.Rect(position.x,position.y,size[0],size[1])
 
 
 class HolderButton:
