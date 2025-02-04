@@ -14,11 +14,12 @@ class bone:
 
 
 class HolderButton:
-    def __init__(self,position=pg.Vector2(0,0),scale=(0,0),color=(0,0,0),name="image"):
+    def __init__(self,position=pg.Vector2(0,0),scale=(0,0),color=(0,0,0),name="image",name1="image"):
         self.position=position
         self.scale=scale
         self.color=color
         self.name=name
+        self.name1=name1
         self.rect=pg.Rect(position[0],position[1],scale[0],scale[1])   
 
 class holder:
@@ -29,10 +30,21 @@ class holder:
         self.scale=scale
         self.rect=pg.rect.Rect(position,scale)
         self.selected=False
-        self.holder_buttons=[HolderButton(self.position+pg.Vector2(0,-20),(16,16),(0,0,255)),HolderButton(self.position+pg.Vector2(0,-20),(16,16),(0,255,0))]
+        self.holder_buttons=[HolderButton(self.position+pg.Vector2(0,-20),(16,16),(0,0,255)),HolderButton(self.position+pg.Vector2(10,-20),(16,16),(0,255,0))]
 
-    def load(self,screen):
-        pg.draw.rect(screen,'black',(self.position,self.scale),5)
+    def load(self, screen):
+    # Draw the rectangle
+        pg.draw.rect(screen, 'black', (self.position, self.scale), 3)
+
+    # Create a rectangle object to get the correct corners
+        rect = pg.Rect(self.position, self.scale)  
+        corners = [rect.topleft, rect.topright, rect.bottomleft, rect.bottomright]
+
+    # Draw circles at the corners
+        for corner in corners:
+            pg.draw.circle(screen, (0, 0, 0), corner, 5)  # Increased radius for visibility
+
+
         #pg.draw.rect(screen,'grey',(self.position+pg.Vector2(4,4),self.scale-pg.Vector2(8,8)))
     def display_holder_buttons(self,screen):
         count=0
@@ -40,12 +52,29 @@ class holder:
             pos=pg.Vector2(holder_button.position[0]+count*20,holder_button.position[1])
             pg.draw.rect(screen,holder_button.color,(pos,holder_button.scale))
             holder_button.rect.topleft=(pos.x,pos.y)
-            if(holder_button.rect.collidepoint(shared.mouse_pos) and shared.mouse_down):
-                shared.current_selected_options=shared.holder_selected_options[count+1]
+            if (self.holder_buttons[0]== holder_button):
+                if(holder_button.rect.collidepoint(shared.mouse_pos) and shared.mouse_down):
+                    shared.current_selected_options=shared.holder_selected_options[count+1]
                 
-                shared.mouse_down=False
-                print("Selected")
-            count+=1
+                    shared.mouse_down=False
+                    print("Selected")
+                count+=1
+                image_box = pg.transform.smoothscale(pg.image.load('UI_Pics/image.jpg'),(20,20))
+                img = image_box.get_rect(center = (pos[0]+10,pos[1]+6))
+                screen.blit(image_box, img)
+            else:
+                if(holder_button.rect.collidepoint(shared.mouse_pos) and shared.mouse_down):
+                    shared.current_selected_options=shared.holder_selected_options[count+1]
+                
+                    shared.mouse_down=False
+                    print("Selected")
+                count+=1
+                image_box = pg.transform.smoothscale(pg.image.load('UI_Pics/Bone.jpg'),(20,20))
+                img = image_box.get_rect(center = (pos[0]+10,pos[1]+6))
+                screen.blit(image_box, img)
+
+
+
 
 
 
